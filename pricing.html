@@ -7,6 +7,7 @@
   <title>Pricing & Plans — Nolax AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
   <link rel="stylesheet" href="components/ui/FluidGlass.css">
   <link rel="stylesheet" href="components/ui/box-loader.css">
   <link rel="stylesheet" href="components/ui/balloon-button.css">
@@ -19,7 +20,7 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: #07090e;
+      background-color: #3876ba;
       color: #ffffff;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
@@ -43,15 +44,31 @@
       width: 100vw;
       height: 100vh;
       pointer-events: none;
-      z-index: -10;
+      z-index: 0;
     }
 
     .bg-overlay {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 50% 20%, rgba(7, 9, 14, 0.25) 0%, rgba(7, 9, 14, 0.65) 100%);
+      background: radial-gradient(circle at 50% 20%, rgba(7, 9, 14, 0.15) 0%, rgba(7, 9, 14, 0.55) 100%);
       pointer-events: none;
-      z-index: -5;
+      z-index: 1;
+    }
+
+    header, section, footer {
+      position: relative;
+      z-index: 10;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active, .hero-visible {
+      opacity: 1 !important;
+      transform: none !important;
     }
 
     .card-glass {
@@ -204,7 +221,7 @@
     <div class="relative z-10 max-w-4xl mx-auto px-6">
 
       <!-- TechText Wordmark -->
-      <div class="w-full h-28 sm:h-36 relative mb-4 cursor-pointer select-none reveal" data-tech-text
+      <div class="w-full h-28 sm:h-36 relative mb-4 cursor-pointer select-none hero-visible" style="min-height: 120px;" data-tech-text
         data-text="PRICING" data-font-size="95" data-color="#ffffff" data-accent="#8cbfe8">
       </div>
 
