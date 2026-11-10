@@ -1,0 +1,169 @@
+/* ==========================================================================
+   BALLOON BUTTON — 3D Inflated Foil/Vinyl Cushion Component
+   Inspired by 21st.dev / uibrik tactile inflated WebGL & CSS buttons
+   ========================================================================== */
+
+.balloon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2.2rem;
+  border-radius: 9999px;
+  background: 
+    /* Top specular highlight strip */
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.06) 20%, transparent 60%),
+    /* Left shoulder gloss cone */
+    radial-gradient(ellipse 32px 22px at 14% 30%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 45%, transparent 75%),
+    /* Right shoulder gloss cone */
+    radial-gradient(ellipse 32px 22px at 86% 30%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 45%, transparent 75%),
+    /* Deep 3D vinyl / foil body */
+    radial-gradient(120% 85% at 50% 25%, #232733 0%, #12141c 50%, #06070a 100%);
+  background-color: #0b0d13;
+  color: #ffffff !important;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 
+    /* Specular rim reflex top */
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.65),
+    /* Specular bounce bottom */
+    inset 0 -1.5px 2.5px rgba(255, 255, 255, 0.25),
+    /* Inner dark chamber cushion */
+    inset 0 0 18px rgba(0, 0, 0, 0.85),
+    /* Deep outer ambient shadow */
+    0 12px 28px -4px rgba(0, 0, 0, 0.8),
+    0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+              filter 0.2s ease;
+  overflow: visible;
+  user-select: none;
+  isolation: isolate;
+  white-space: nowrap;
+}
+
+/* Outer Seam Wrinkles & Puckers (Foil Balloon sealed edge effect) */
+.balloon-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background-image: 
+    /* Top seam micro-wrinkle creases */
+    radial-gradient(ellipse 3px 6px at 6% 2px, rgba(0, 0, 0, 0.9) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 12% 2px, rgba(0, 0, 0, 0.85) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 20% 2px, rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 28% 2px, rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 36% 2px, rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 44% 2px, rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 52% 2px, rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 60% 2px, rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 68% 2px, rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 76% 2px, rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 84% 2px, rgba(0, 0, 0, 0.85) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 94% 2px, rgba(0, 0, 0, 0.9) 0%, transparent 80%),
+    /* Bottom seam micro-wrinkle creases */
+    radial-gradient(ellipse 3px 6px at 8% calc(100% - 2px), rgba(0, 0, 0, 0.85) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 16% calc(100% - 2px), rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 26% calc(100% - 2px), rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 38% calc(100% - 2px), rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 50% calc(100% - 2px), rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 62% calc(100% - 2px), rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 74% calc(100% - 2px), rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 86% calc(100% - 2px), rgba(0, 0, 0, 0.8) 0%, transparent 80%),
+    radial-gradient(ellipse 3px 6px at 92% calc(100% - 2px), rgba(0, 0, 0, 0.85) 0%, transparent 80%),
+    /* Left and right rounded end creases */
+    radial-gradient(ellipse 6px 3px at 2px 28%, rgba(0, 0, 0, 0.85) 0%, transparent 80%),
+    radial-gradient(ellipse 6px 3px at 2px 72%, rgba(0, 0, 0, 0.85) 0%, transparent 80%),
+    radial-gradient(ellipse 6px 3px at calc(100% - 2px) 28%, rgba(0, 0, 0, 0.85) 0%, transparent 80%),
+    radial-gradient(ellipse 6px 3px at calc(100% - 2px) 72%, rgba(0, 0, 0, 0.85) 0%, transparent 80%);
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Secondary gloss reflection layer */
+.balloon-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: 
+    /* Specular diagonal sheen on shoulders */
+    linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, transparent 35%),
+    linear-gradient(225deg, rgba(255, 255, 255, 0.3) 0%, transparent 35%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* Content layer stays crisp above shine */
+.balloon-btn > * {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+/* Hover state: Gentle pneumatic swell & enhanced specular shine */
+.balloon-btn:hover {
+  transform: translateY(-2px) scale(1.025);
+  box-shadow: 
+    inset 0 2px 3px rgba(255, 255, 255, 0.8),
+    inset 0 -2px 3px rgba(255, 255, 255, 0.35),
+    inset 0 0 22px rgba(0, 0, 0, 0.75),
+    0 16px 32px -4px rgba(0, 0, 0, 0.85),
+    0 6px 14px rgba(56, 118, 186, 0.35);
+  filter: brightness(1.08);
+}
+
+/* Active / Pressed state: Springy rubber dent compression */
+.balloon-btn:active {
+  transform: scale(0.96, 0.93) translateY(2px);
+  box-shadow: 
+    inset 0 6px 14px rgba(0, 0, 0, 0.95),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    0 4px 10px rgba(0, 0, 0, 0.6);
+  filter: brightness(0.92);
+}
+
+/* Variants */
+.balloon-btn-sm {
+  padding: 0.55rem 1.4rem;
+  font-size: 0.75rem;
+}
+
+.balloon-btn-lg {
+  padding: 1.05rem 2.6rem;
+  font-size: 0.925rem;
+  letter-spacing: 0.02em;
+}
+
+.balloon-btn-full {
+  width: 100%;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+  .balloon-btn {
+    padding: 0.75rem 1.35rem;
+    font-size: 0.8rem;
+    letter-spacing: -0.01em;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .balloon-btn-lg {
+    padding: 0.85rem 1.6rem;
+    font-size: 0.85rem;
+  }
+  .balloon-btn-sm {
+    padding: 0.45rem 1.1rem;
+    font-size: 0.72rem;
+  }
+}
+

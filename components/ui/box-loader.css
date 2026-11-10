@@ -1,0 +1,128 @@
+/* 3D Isometric Sliding Box Loader */
+.boxes {
+  --size: 36px;
+  --duration: 800ms;
+  height: calc(var(--size) * 2);
+  width: calc(var(--size) * 3);
+  position: relative;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  margin-top: calc(var(--size) * 1.5 * -1);
+  transform: rotateX(60deg) rotateZ(45deg) rotateY(0deg) translateZ(0px);
+}
+
+.boxes .box {
+  width: var(--size);
+  height: var(--size);
+  top: 0;
+  left: 0;
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+.boxes .box.box-1 {
+  transform: translate(100%, 0);
+  animation: box1 var(--duration) linear infinite;
+}
+
+.boxes .box.box-2 {
+  transform: translate(0, 100%);
+  animation: box2 var(--duration) linear infinite;
+}
+
+.boxes .box.box-3 {
+  transform: translate(100%, 100%);
+  animation: box3 var(--duration) linear infinite;
+}
+
+.boxes .box.box-4 {
+  transform: translate(200%, 0);
+  animation: box4 var(--duration) linear infinite;
+}
+
+.boxes .box .face {
+  --background: #3876ba;
+  --top: #8cbfe8;
+  --right: #255486;
+  --left: #1a3c61;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: var(--background);
+  box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.15);
+}
+
+.boxes .box .face.face-top {
+  top: 0;
+  left: 0;
+  background: var(--top);
+  transform: rotateY(0deg) rotateX(0deg) translateZ(var(--size));
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.boxes .box .face.face-front {
+  bottom: 0;
+  left: 0;
+  background: var(--left);
+  transform: rotateX(90deg) translateZ(0);
+  transform-origin: 50% 100%;
+}
+
+.boxes .box .face.face-right {
+  top: 0;
+  right: 0;
+  background: var(--right);
+  transform: rotateY(90deg) translateZ(0);
+  transform-origin: 100% 50%;
+}
+
+.boxes .box .face.face-back {
+  top: 0;
+  left: 0;
+  background: var(--background);
+  transform: rotateY(180deg) translateZ(0);
+  transform-origin: 50% 50%;
+}
+
+@keyframes box1 {
+  0%, 50% {
+    transform: translate(100%, 0);
+  }
+  100% {
+    transform: translate(200%, 0);
+  }
+}
+
+@keyframes box2 {
+  0% {
+    transform: translate(0, 100%);
+  }
+  50% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(100%, 0);
+  }
+}
+
+@keyframes box3 {
+  0%, 50% {
+    transform: translate(100%, 100%);
+  }
+  100% {
+    transform: translate(0, 100%);
+  }
+}
+
+@keyframes box4 {
+  0% {
+    transform: translate(200%, 0);
+  }
+  50% {
+    transform: translate(200%, 100%);
+  }
+  100% {
+    transform: translate(100%, 100%);
+  }
+}
+

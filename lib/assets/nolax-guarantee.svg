@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" width="400" height="520">
+  <!-- Paper background -->
+  <rect x="10" y="10" width="380" height="500" rx="4" fill="#fcfbf7" stroke="#dcd6c8" stroke-width="2"/>
+  <rect x="22" y="22" width="356" height="476" rx="2" fill="none" stroke="#0f172a" stroke-width="2"/>
+  <rect x="26" y="26" width="348" height="468" rx="1" fill="none" stroke="#0f172a" stroke-width="0.5"/>
+
+  <!-- Seal / Emblem Top -->
+  <circle cx="200" cy="72" r="28" fill="#3876ba" opacity="0.12"/>
+  <circle cx="200" cy="72" r="24" fill="none" stroke="#3876ba" stroke-width="2"/>
+  <text x="200" y="78" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" font-weight="900" fill="#3876ba" text-anchor="middle">NLX</text>
+
+  <text x="200" y="125" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" font-weight="900" fill="#0f172a" text-anchor="middle" letter-spacing="1">ZERO HIDDEN FEE GUARANTEE</text>
+  <text x="200" y="142" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">LEGAL PERFORMANCE COVENANT • 100% TRANSPARENT</text>
+  
+  <line x1="45" y1="158" x2="355" y2="158" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Clause 1 -->
+  <text x="45" y="185" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="bold" fill="#0f172a">1. ZERO BASE MANAGEMENT CHARGES</text>
+  <text x="45" y="202" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" fill="#475569">Nolax charges ₹0 fixed annual maintenance. We succeed only</text>
+  <text x="45" y="216" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" fill="#475569">when your portfolio achieves positive alpha above benchmark.</text>
+
+  <!-- Clause 2 -->
+  <text x="45" y="245" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="bold" fill="#0f172a">2. ZERO LOCK-IN OR EXIT PENALTIES</text>
+  <text x="45" y="262" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" fill="#475569">Your capital remains liquid 24/7. Withdraw full capital at any</text>
+  <text x="45" y="276" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" fill="#475569">moment with one click. Zero exit loads or early withdrawal fines.</text>
+
+  <!-- Clause 3 -->
+  <text x="45" y="305" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="bold" fill="#0f172a">3. DIRECT BROKERAGE CUSTODY</text>
+  <text x="45" y="322" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" fill="#475569">All assets remain in your own SEBI-regulated brokerage account.</text>
+  <text x="45" y="336" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" fill="#475569">Nolax never takes custody of your deposited principal funds.</text>
+
+  <line x1="45" y1="360" x2="355" y2="360" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Golden / Blue Ribbon Stamp -->
+  <g transform="translate(60, 385)">
+    <rect x="0" y="0" width="130" height="42" rx="4" fill="#f8fafc" stroke="#3876ba" stroke-width="1.5"/>
+    <text x="65" y="18" font-family="monospace" font-size="8" fill="#64748b" text-anchor="middle">PROTOCOL STATUS</text>
+    <text x="65" y="33" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="900" fill="#3876ba" text-anchor="middle">ACTIVE &amp; BINDING</text>
+  </g>
+
+  <!-- Signature -->
+  <g transform="translate(240, 395)">
+    <path d="M 0,15 Q 15,-10 30,12 T 60,0 T 80,18" fill="none" stroke="#1e293b" stroke-width="2"/>
+    <line x1="0" y1="28" x2="105" y2="28" stroke="#94a3b8" stroke-width="1"/>
+    <text x="52" y="40" font-family="monospace" font-size="8" fill="#64748b" text-anchor="middle">CHIEF QUANT OFFICER</text>
+  </g>
+
+  <text x="200" y="475" font-family="monospace" font-size="8" fill="#94a3b8" text-anchor="middle">HOLD &amp; DRAG TO CRUMPLE THIS DOCUMENT IN REAL-TIME 3D</text>
+</svg>
+

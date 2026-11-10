@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing & Plans — Nolax AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="components/ui/FluidGlass.css">
+  <link rel="stylesheet" href="components/ui/box-loader.css">
+  <link rel="stylesheet" href="components/ui/balloon-button.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #07090e;
+      color: #ffffff;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      letter-spacing: -0.012em;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .font-heading {
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+      letter-spacing: -0.028em;
+    }
+
+    #globalCloudCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: -10;
+    }
+
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 20%, rgba(7, 9, 14, 0.25) 0%, rgba(7, 9, 14, 0.65) 100%);
+      pointer-events: none;
+      z-index: -5;
+    }
+
+    .card-glass {
+      background: rgba(10, 15, 26, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card-glass:hover {
+      border-color: #8cbfe8;
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px -10px rgba(56, 118, 186, 0.4);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #scrollProgress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3876ba, #8cbfe8, #0038ff);
+      z-index: 100;
+      width: 0%;
+      transition: width 0.1s ease-out;
+    }
+
+    .ticker-scroll {
+      animation: ticker 25s linear infinite;
+    }
+
+    @keyframes ticker {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .ext-radius {
+      border-radius: 6px;
+    }
+
+    /* Thermal Receipt Styling */
+    .receipt-card {
+      background-color: #fcfcfb;
+      background-image:
+        radial-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 0),
+        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.015) 3px, rgba(0, 0, 0, 0.015) 4px);
+      background-size: 8px 8px, 100% 4px;
+      color: #0b0d12;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      position: relative;
+    }
+
+    .receipt-wrapper {
+      filter: drop-shadow(0 22px 35px rgba(0, 0, 0, 0.65));
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .receipt-wrapper:hover {
+      transform: translateY(-8px);
+      filter: drop-shadow(0 32px 55px rgba(56, 118, 186, 0.45));
+    }
+
+    .receipt-featured {
+      filter: drop-shadow(0 26px 48px rgba(56, 118, 186, 0.6));
+    }
+  </style>
+</head>
+
+<body class="flex flex-col min-h-screen relative">
+
+  <canvas id="globalCloudCanvas" data-cloud-shader></canvas>
+  <div class="bg-overlay"></div>
+  <div id="scrollProgress"></div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-[#3876ba]/80 backdrop-blur-md border-b border-white/20 text-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="flex items-center gap-1">
+          <span class="w-1.5 h-3 bg-white ext-radius"></span>
+          <span class="w-1.5 h-6 bg-white ext-radius"></span>
+          <span class="w-1.5 h-4 bg-sky-200 ext-radius"></span>
+          <span class="w-1.5 h-7 bg-white ext-radius"></span>
+        </div>
+        <span class="text-2xl font-black tracking-tighter text-white uppercase drop-shadow">nolax</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-8 text-[13.33px] font-semibold text-white/90">
+        <a href="index.html" class="hover:text-white transition-colors">Home</a>
+        <a href="about.html" class="hover:text-white transition-colors">About ↓</a>
+        <a href="services.html" class="hover:text-white transition-colors">Services ↓</a>
+        <a href="works.html" class="hover:text-white transition-colors">Works ↓</a>
+        <a href="pricing.html" class="text-white border-b-2 border-white pb-1 font-bold">Plans ↓</a>
+        <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <a href="contact.html" class="balloon-btn balloon-btn-sm">
+          <span>Let's chat</span>
+          <span>👋</span>
+        </a>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="mobileMenuBtn" aria-label="Toggle navigation menu" class="lg:hidden p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all flex items-center justify-center">
+          <svg class="w-6 h-6 menu-open-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg class="w-6 h-6 menu-close-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobileMenu" class="lg:hidden hidden border-t border-white/15 bg-[#07090e]/95 backdrop-blur-2xl px-6 py-6 shadow-2xl transition-all duration-300">
+      <div class="flex flex-col space-y-3 font-semibold text-sm text-white/90">
+        <a href="index.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Home</a>
+        <a href="about.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">About</a>
+        <a href="services.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Services</a>
+        <a href="works.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Works</a>
+        <a href="pricing.html" class="mobile-nav-link py-2.5 border-b border-white/10 text-white font-bold bg-white/5 px-2 rounded">Plans (Current)</a>
+        <a href="contact.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Contact</a>
+      </div>
+      <div class="mt-5 pt-3">
+        <a href="contact.html" class="balloon-btn balloon-btn-full py-3 mobile-nav-link">
+          <span>Schedule Strategy Call</span>
+          <span>👋</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero with TechText -->
+  <section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden py-16 text-center">
+    <div class="relative z-10 max-w-4xl mx-auto px-6">
+
+      <!-- TechText Wordmark -->
+      <div class="w-full h-28 sm:h-36 relative mb-4 cursor-pointer select-none reveal" data-tech-text
+        data-text="PRICING" data-font-size="95" data-color="#ffffff" data-accent="#8cbfe8">
+      </div>
+
+      <h1
+        class="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase leading-tight mb-6 drop-shadow-[0_4px_24px_rgba(0,0,0,0.35)] reveal">
+        PERFORMANCE-ALIGNED. ZERO COMMISSION DRAG.
+      </h1>
+
+      <p class="text-white/85 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto font-normal drop-shadow reveal">
+        No management fees when we fail to generate alpha. We only succeed when your capital compounds.
+      </p>
+    </div>
+  </section>
+
+  <!-- Marquee Ticker -->
+  <div
+    class="w-full bg-[#3876ba]/90 backdrop-blur-md py-3.5 overflow-hidden whitespace-nowrap text-white font-mono text-[12px] font-bold tracking-widest uppercase border-y border-white/20 shadow-md">
+    <div class="flex ticker-scroll">
+      <span class="mx-6">/ OPERATING TIER UPGRADE · POST-NOLAX</span>
+      <span class="mx-6">/ ZERO HIDDEN BROKER COMMISSIONS</span>
+      <span class="mx-6">/ ZERO LOCK-IN PERIOD (WITHDRAW ANYTIME)</span>
+      <span class="mx-6">/ NON-CUSTODIAL EXECUTION · DIRECT ROUTING</span>
+      <span class="mx-6">/ OPERATING TIER UPGRADE · POST-NOLAX</span>
+      <span class="mx-6">/ ZERO HIDDEN BROKER COMMISSIONS</span>
+      <span class="mx-6">/ ZERO LOCK-IN PERIOD (WITHDRAW ANYTIME)</span>
+      <span class="mx-6">/ NON-CUSTODIAL EXECUTION · DIRECT ROUTING</span>
+    </div>
+  </div>
+
+  <!-- 3 Plans Grid -->
+  <section class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6">
+    <!-- 3 Thermal Receipt Pricing Cards (Styled after Meridian / Institutional Trading Slips) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start mb-16">
+
+      <!-- Receipt 1: STARTER -->
+      <div class="receipt-wrapper reveal flex flex-col">
+        <!-- Top Jagged Sawtooth Perforation -->
+        <div class="w-full h-3 overflow-hidden leading-none -mb-[1px]">
+          <svg class="w-full h-3 fill-[#fcfcfb]" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <polygon
+              points="0,12 5,0 10,12 15,0 20,12 25,0 30,12 35,0 40,12 45,0 50,12 55,0 60,12 65,0 70,12 75,0 80,12 85,0 90,12 95,0 100,12 105,0 110,12 115,0 120,12 125,0 130,12 135,0 140,12 145,0 150,12 155,0 160,12 165,0 170,12 175,0 180,12 185,0 190,12 195,0 200,12">
+            </polygon>
+          </svg>
+        </div>
+
+        <!-- Receipt Body -->
+        <div class="receipt-card px-4 py-6 sm:px-7 sm:py-8 flex flex-col justify-between">
+          <div>
+            <!-- Header -->
+            <div class="text-center pb-4 border-b border-dashed border-neutral-400">
+              <div class="text-lg font-black tracking-[0.35em] uppercase text-neutral-950 font-mono">N O L A X</div>
+              <div class="text-[9px] font-mono tracking-widest text-neutral-600 uppercase mt-0.5">QUANTITATIVE ALPHA FOR
+                CAPITAL TEAMS</div>
+            </div>
+
+            <!-- Order Metadata -->
+            <div class="py-3 border-b border-dashed border-neutral-400 text-[11px] font-mono space-y-1">
+              <div class="flex justify-between">
+                <span class="text-neutral-600 tracking-wider">ORDER</span>
+                <span class="font-bold text-neutral-950">NX-56948</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-600 tracking-wider">BILLING</span>
+                <span class="font-bold text-neutral-950">MONTHLY</span>
+              </div>
+            </div>
+
+            <!-- Plan Title -->
+            <div class="py-4 text-center border-b border-dashed border-neutral-400">
+              <div class="text-xl font-black tracking-[0.25em] uppercase text-neutral-950 font-mono">S T A R T E R</div>
+              <div class="text-[9.5px] font-mono tracking-wider text-neutral-600 uppercase mt-1">DISCIPLINED INDIVIDUAL
+                MOMENTUM</div>
+            </div>
+
+            <!-- Specs Dot Leaders -->
+            <div class="py-4 space-y-2.5 text-[11px] font-mono">
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">MIN CAPITAL</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">₹25,000</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">ALGO MODEL</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">MOMENTUM V1</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">LATENCY</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">18.4 MS</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">RISK SHIELD</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-emerald-700">ACTIVE</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">LOCK-IN</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">ZERO</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">TELEMETRY</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">24/7 LIVE</span>
+              </div>
+            </div>
+
+            <!-- Financial Subtotal -->
+            <div class="pt-3 pb-3 border-t border-dashed border-neutral-400 space-y-1.5 text-[11px] font-mono">
+              <div class="flex justify-between">
+                <span class="text-neutral-700 tracking-wider">SUBTOTAL (MGMT FEE)</span>
+                <span class="font-bold text-neutral-950">₹0.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-700 tracking-wider">PROFIT CUT</span>
+                <span class="font-bold text-neutral-950">15.00%</span>
+              </div>
+            </div>
+
+            <!-- Barcode Stamp -->
+            <div class="pt-2 border-t border-dashed border-neutral-400 flex flex-col items-center">
+              <div class="w-full h-7 opacity-80 my-1">
+                <svg class="w-full h-full" viewBox="0 0 240 28" preserveAspectRatio="none">
+                  <rect x="0" y="0" width="3" height="28" fill="#111" />
+                  <rect x="5" y="0" width="2" height="28" fill="#111" />
+                  <rect x="9" y="0" width="4" height="28" fill="#111" />
+                  <rect x="16" y="0" width="1" height="28" fill="#111" />
+                  <rect x="19" y="0" width="3" height="28" fill="#111" />
+                  <rect x="25" y="0" width="5" height="28" fill="#111" />
+                  <rect x="33" y="0" width="2" height="28" fill="#111" />
+                  <rect x="38" y="0" width="4" height="28" fill="#111" />
+                  <rect x="44" y="0" width="1" height="28" fill="#111" />
+                  <rect x="48" y="0" width="3" height="28" fill="#111" />
+                  <rect x="54" y="0" width="2" height="28" fill="#111" />
+                  <rect x="59" y="0" width="6" height="28" fill="#111" />
+                  <rect x="68" y="0" width="2" height="28" fill="#111" />
+                  <rect x="73" y="0" width="4" height="28" fill="#111" />
+                  <rect x="80" y="0" width="1" height="28" fill="#111" />
+                  <rect x="84" y="0" width="3" height="28" fill="#111" />
+                  <rect x="90" y="0" width="5" height="28" fill="#111" />
+                  <rect x="98" y="0" width="2" height="28" fill="#111" />
+                  <rect x="103" y="0" width="4" height="28" fill="#111" />
+                  <rect x="110" y="0" width="2" height="28" fill="#111" />
+                  <rect x="115" y="0" width="3" height="28" fill="#111" />
+                  <rect x="121" y="0" width="6" height="28" fill="#111" />
+                  <rect x="130" y="0" width="2" height="28" fill="#111" />
+                  <rect x="135" y="0" width="4" height="28" fill="#111" />
+                  <rect x="142" y="0" width="1" height="28" fill="#111" />
+                  <rect x="146" y="0" width="3" height="28" fill="#111" />
+                  <rect x="152" y="0" width="4" height="28" fill="#111" />
+                  <rect x="159" y="0" width="2" height="28" fill="#111" />
+                  <rect x="164" y="0" width="5" height="28" fill="#111" />
+                  <rect x="172" y="0" width="1" height="28" fill="#111" />
+                  <rect x="176" y="0" width="3" height="28" fill="#111" />
+                  <rect x="182" y="0" width="5" height="28" fill="#111" />
+                  <rect x="190" y="0" width="2" height="28" fill="#111" />
+                  <rect x="195" y="0" width="4" height="28" fill="#111" />
+                  <rect x="202" y="0" width="2" height="28" fill="#111" />
+                  <rect x="207" y="0" width="6" height="28" fill="#111" />
+                  <rect x="216" y="0" width="2" height="28" fill="#111" />
+                  <rect x="221" y="0" width="4" height="28" fill="#111" />
+                  <rect x="228" y="0" width="1" height="28" fill="#111" />
+                  <rect x="232" y="0" width="3" height="28" fill="#111" />
+                  <rect x="238" y="0" width="2" height="28" fill="#111" />
+                </svg>
+              </div>
+              <div class="text-[9px] font-mono tracking-[0.3em] text-neutral-500 mt-1">NX·56948·SEBI·COMPLIANT</div>
+            </div>
+          </div>
+
+          <!-- Button -->
+          <div class="mt-5 pt-3 border-t border-dashed border-neutral-400 flex justify-center">
+            <a href="contact.html" class="balloon-btn balloon-btn-full balloon-btn-sm">
+              <span>SELECT STARTER</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bottom Jagged Sawtooth Perforation -->
+        <div class="w-full h-3 overflow-hidden leading-none -mt-[1px]">
+          <svg class="w-full h-3 fill-[#fcfcfb]" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <polygon
+              points="0,0 5,12 10,0 15,12 20,0 25,12 30,0 35,12 40,0 45,12 50,0 55,12 60,0 65,12 70,0 75,12 80,0 85,12 90,0 95,12 100,0 105,12 110,0 115,12 120,0 125,12 130,0 135,12 140,0 145,12 150,0 155,12 160,0 165,12 170,0 175,12 180,0 185,12 190,0 195,12 200,0">
+            </polygon>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Receipt 2: PRO ALPHA (MOST POPULAR) -->
+      <div class="receipt-wrapper receipt-featured reveal md:-translate-y-3 flex flex-col">
+        <!-- Top Jagged Sawtooth Perforation -->
+        <div class="w-full h-3 overflow-hidden leading-none -mb-[1px]">
+          <svg class="w-full h-3 fill-[#ffffff]" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <polygon
+              points="0,12 5,0 10,12 15,0 20,12 25,0 30,12 35,0 40,12 45,0 50,12 55,0 60,12 65,0 70,12 75,0 80,12 85,0 90,12 95,0 100,12 105,0 110,12 115,0 120,12 125,0 130,12 135,0 140,12 145,0 150,12 155,0 160,12 165,0 170,12 175,0 180,12 185,0 190,12 195,0 200,12">
+            </polygon>
+          </svg>
+        </div>
+
+        <!-- Receipt Body -->
+        <div
+          class="receipt-card !bg-white border-x-2 border-neutral-900 px-4 py-6 sm:px-7 sm:py-8 flex flex-col justify-between">
+          <div>
+            <!-- Header -->
+            <div class="text-center pb-4 border-b border-dashed border-neutral-400">
+              <div class="text-lg font-black tracking-[0.35em] uppercase text-neutral-950 font-mono">N O L A X</div>
+              <div class="text-[9px] font-mono tracking-widest text-neutral-600 uppercase mt-0.5">QUANTITATIVE ALPHA FOR
+                CAPITAL TEAMS</div>
+            </div>
+
+            <!-- Order Metadata -->
+            <div class="py-3 border-b border-dashed border-neutral-400 text-[11px] font-mono space-y-1">
+              <div class="flex justify-between">
+                <span class="text-neutral-600 tracking-wider">ORDER</span>
+                <span class="font-bold text-neutral-950">NX-61612</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-600 tracking-wider">BILLING</span>
+                <span class="font-bold text-neutral-950">MONTHLY</span>
+              </div>
+            </div>
+
+            <!-- Plan Title + Most Popular Tag -->
+            <div class="py-4 text-center border-b border-dashed border-neutral-400">
+              <div class="text-xl font-black tracking-[0.25em] uppercase text-neutral-950 font-mono">P R O A L P H A
+              </div>
+              <div class="text-[9.5px] font-mono tracking-wider text-neutral-600 uppercase mt-1">ACCELERATED QUANT ALPHA
+                ENGINE</div>
+              <div
+                class="text-[10px] font-mono font-bold tracking-[0.25em] text-neutral-950 uppercase mt-2.5 bg-neutral-100 py-1 px-2 inline-block border border-neutral-300">
+                * * * MOST POPULAR * * *
+              </div>
+            </div>
+
+            <!-- Specs Dot Leaders -->
+            <div class="py-4 space-y-2.5 text-[11px] font-mono">
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">MIN CAPITAL</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">₹2,00,000</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">ALGO MODEL</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">WHALE RADAR V3</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">LATENCY</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">12.0 MS</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">RISK PARITY</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-emerald-700">AUTO-HEDGES</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">WHATSAPP ALERTS</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">INCL.</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">QUANT LEAD</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">DEDICATED</span>
+              </div>
+            </div>
+
+            <!-- Financial Subtotal -->
+            <div class="pt-3 pb-3 border-t border-dashed border-neutral-400 space-y-1.5 text-[11px] font-mono">
+              <div class="flex justify-between">
+                <span class="text-neutral-700 tracking-wider">SUBTOTAL (MGMT FEE)</span>
+                <span class="font-bold text-neutral-950">₹0.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-700 tracking-wider">PROFIT CUT</span>
+                <span class="font-bold text-neutral-950">12.00%</span>
+              </div>
+            </div>
+
+            <!-- Barcode Stamp -->
+            <div class="pt-2 border-t border-dashed border-neutral-400 flex flex-col items-center">
+              <div class="w-full h-7 opacity-85 my-1">
+                <svg class="w-full h-full" viewBox="0 0 240 28" preserveAspectRatio="none">
+                  <rect x="0" y="0" width="3" height="28" fill="#111" />
+                  <rect x="5" y="0" width="2" height="28" fill="#111" />
+                  <rect x="10" y="0" width="3" height="28" fill="#111" />
+                  <rect x="15" y="0" width="5" height="28" fill="#111" />
+                  <rect x="23" y="0" width="2" height="28" fill="#111" />
+                  <rect x="28" y="0" width="4" height="28" fill="#111" />
+                  <rect x="35" y="0" width="1" height="28" fill="#111" />
+                  <rect x="39" y="0" width="3" height="28" fill="#111" />
+                  <rect x="45" y="0" width="6" height="28" fill="#111" />
+                  <rect x="54" y="0" width="2" height="28" fill="#111" />
+                  <rect x="59" y="0" width="4" height="28" fill="#111" />
+                  <rect x="66" y="0" width="2" height="28" fill="#111" />
+                  <rect x="71" y="0" width="5" height="28" fill="#111" />
+                  <rect x="79" y="0" width="1" height="28" fill="#111" />
+                  <rect x="83" y="0" width="3" height="28" fill="#111" />
+                  <rect x="89" y="0" width="4" height="28" fill="#111" />
+                  <rect x="96" y="0" width="2" height="28" fill="#111" />
+                  <rect x="101" y="0" width="5" height="28" fill="#111" />
+                  <rect x="109" y="0" width="2" height="28" fill="#111" />
+                  <rect x="114" y="0" width="3" height="28" fill="#111" />
+                  <rect x="120" y="0" width="6" height="28" fill="#111" />
+                  <rect x="129" y="0" width="2" height="28" fill="#111" />
+                  <rect x="134" y="0" width="4" height="28" fill="#111" />
+                  <rect x="141" y="0" width="1" height="28" fill="#111" />
+                  <rect x="145" y="0" width="4" height="28" fill="#111" />
+                  <rect x="152" y="0" width="2" height="28" fill="#111" />
+                  <rect x="157" y="0" width="5" height="28" fill="#111" />
+                  <rect x="165" y="0" width="2" height="28" fill="#111" />
+                  <rect x="170" y="0" width="4" height="28" fill="#111" />
+                  <rect x="177" y="0" width="1" height="28" fill="#111" />
+                  <rect x="181" y="0" width="3" height="28" fill="#111" />
+                  <rect x="187" y="0" width="5" height="28" fill="#111" />
+                  <rect x="195" y="0" width="2" height="28" fill="#111" />
+                  <rect x="200" y="0" width="4" height="28" fill="#111" />
+                  <rect x="207" y="0" width="2" height="28" fill="#111" />
+                  <rect x="212" y="0" width="6" height="28" fill="#111" />
+                  <rect x="221" y="0" width="2" height="28" fill="#111" />
+                  <rect x="226" y="0" width="4" height="28" fill="#111" />
+                  <rect x="233" y="0" width="2" height="28" fill="#111" />
+                  <rect x="238" y="0" width="2" height="28" fill="#111" />
+                </svg>
+              </div>
+              <div class="text-[9px] font-mono tracking-[0.3em] text-neutral-500 mt-1">NX·61612·PRIORITY·ALPHA</div>
+            </div>
+          </div>
+
+          <!-- Button -->
+          <div class="mt-5 pt-3 border-t border-dashed border-neutral-400 flex justify-center">
+            <a href="contact.html" class="balloon-btn balloon-btn-full balloon-btn-sm">
+              <span>DEPLOY PRO ALPHA</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bottom Jagged Sawtooth Perforation -->
+        <div class="w-full h-3 overflow-hidden leading-none -mt-[1px]">
+          <svg class="w-full h-3 fill-[#ffffff]" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <polygon
+              points="0,0 5,12 10,0 15,12 20,0 25,12 30,0 35,12 40,0 45,12 50,0 55,12 60,0 65,12 70,0 75,12 80,0 85,12 90,0 95,12 100,0 105,12 110,0 115,12 120,0 125,12 130,0 135,12 140,0 145,12 150,0 155,12 160,0 165,12 170,0 175,12 180,0 185,12 190,0 195,12 200,0">
+            </polygon>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Receipt 3: INSTITUTIONAL -->
+      <div class="receipt-wrapper reveal flex flex-col">
+        <!-- Top Jagged Sawtooth Perforation -->
+        <div class="w-full h-3 overflow-hidden leading-none -mb-[1px]">
+          <svg class="w-full h-3 fill-[#fcfcfb]" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <polygon
+              points="0,12 5,0 10,12 15,0 20,12 25,0 30,12 35,0 40,12 45,0 50,12 55,0 60,12 65,0 70,12 75,0 80,12 85,0 90,12 95,0 100,12 105,0 110,12 115,0 120,12 125,0 130,12 135,0 140,12 145,0 150,12 155,0 160,12 165,0 170,12 175,0 180,12 185,0 190,12 195,0 200,12">
+            </polygon>
+          </svg>
+        </div>
+
+        <!-- Receipt Body -->
+        <div class="receipt-card px-4 py-6 sm:px-7 sm:py-8 flex flex-col justify-between">
+          <div>
+            <!-- Header -->
+            <div class="text-center pb-4 border-b border-dashed border-neutral-400">
+              <div class="text-lg font-black tracking-[0.35em] uppercase text-neutral-950 font-mono">N O L A X</div>
+              <div class="text-[9px] font-mono tracking-widest text-neutral-600 uppercase mt-0.5">QUANTITATIVE ALPHA FOR
+                CAPITAL TEAMS</div>
+            </div>
+
+            <!-- Order Metadata -->
+            <div class="py-3 border-b border-dashed border-neutral-400 text-[11px] font-mono space-y-1">
+              <div class="flex justify-between">
+                <span class="text-neutral-600 tracking-wider">ORDER</span>
+                <span class="font-bold text-neutral-950">NX-99084</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-600 tracking-wider">BILLING</span>
+                <span class="font-bold text-neutral-950">MONTHLY</span>
+              </div>
+            </div>
+
+            <!-- Plan Title -->
+            <div class="py-4 text-center border-b border-dashed border-neutral-400">
+              <div class="text-xl font-black tracking-[0.2em] uppercase text-neutral-950 font-mono">I N S T I T U T I O
+                N A L</div>
+              <div class="text-[9.5px] font-mono tracking-wider text-neutral-600 uppercase mt-1">FAMILY OFFICES &amp;
+                FOUNDERS</div>
+            </div>
+
+            <!-- Specs Dot Leaders -->
+            <div class="py-4 space-y-2.5 text-[11px] font-mono">
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">MIN CAPITAL</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">₹15,00,000+</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">ALGO MODEL</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">BESPOKE MULTI</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">LATENCY</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">&lt;5.0 MS</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">COLOCATION</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-emerald-700">PRIVATE CLUSTER</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">TAX-HARVEST</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">INCL.</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">CHIEF ARCHITECT</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">DIRECT LINE</span>
+              </div>
+            </div>
+
+            <!-- Financial Subtotal -->
+            <div class="pt-3 pb-3 border-t border-dashed border-neutral-400 space-y-1.5 text-[11px] font-mono">
+              <div class="flex justify-between">
+                <span class="text-neutral-700 tracking-wider">SUBTOTAL (MGMT FEE)</span>
+                <span class="font-bold text-neutral-950">₹0.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-700 tracking-wider">PROFIT CUT</span>
+                <span class="font-bold text-neutral-950">10.00%</span>
+              </div>
+            </div>
+
+            <!-- Barcode Stamp -->
+            <div class="pt-2 border-t border-dashed border-neutral-400 flex flex-col items-center">
+              <div class="w-full h-7 opacity-80 my-1">
+                <svg class="w-full h-full" viewBox="0 0 240 28" preserveAspectRatio="none">
+                  <rect x="0" y="0" width="3" height="28" fill="#111" />
+                  <rect x="5" y="0" width="3" height="28" fill="#111" />
+                  <rect x="11" y="0" width="2" height="28" fill="#111" />
+                  <rect x="15" y="0" width="5" height="28" fill="#111" />
+                  <rect x="23" y="0" width="2" height="28" fill="#111" />
+                  <rect x="28" y="0" width="4" height="28" fill="#111" />
+                  <rect x="35" y="0" width="2" height="28" fill="#111" />
+                  <rect x="40" y="0" width="3" height="28" fill="#111" />
+                  <rect x="46" y="0" width="5" height="28" fill="#111" />
+                  <rect x="54" y="0" width="2" height="28" fill="#111" />
+                  <rect x="59" y="0" width="4" height="28" fill="#111" />
+                  <rect x="66" y="0" width="1" height="28" fill="#111" />
+                  <rect x="70" y="0" width="5" height="28" fill="#111" />
+                  <rect x="78" y="0" width="2" height="28" fill="#111" />
+                  <rect x="83" y="0" width="4" height="28" fill="#111" />
+                  <rect x="90" y="0" width="2" height="28" fill="#111" />
+                  <rect x="95" y="0" width="4" height="28" fill="#111" />
+                  <rect x="102" y="0" width="2" height="28" fill="#111" />
+                  <rect x="107" y="0" width="5" height="28" fill="#111" />
+                  <rect x="115" y="0" width="2" height="28" fill="#111" />
+                  <rect x="120" y="0" width="6" height="28" fill="#111" />
+                  <rect x="129" y="0" width="2" height="28" fill="#111" />
+                  <rect x="134" y="0" width="4" height="28" fill="#111" />
+                  <rect x="141" y="0" width="1" height="28" fill="#111" />
+                  <rect x="145" y="0" width="3" height="28" fill="#111" />
+                  <rect x="151" y="0" width="5" height="28" fill="#111" />
+                  <rect x="159" y="0" width="2" height="28" fill="#111" />
+                  <rect x="164" y="0" width="4" height="28" fill="#111" />
+                  <rect x="171" y="0" width="2" height="28" fill="#111" />
+                  <rect x="176" y="0" width="5" height="28" fill="#111" />
+                  <rect x="184" y="0" width="2" height="28" fill="#111" />
+                  <rect x="189" y="0" width="4" height="28" fill="#111" />
+                  <rect x="196" y="0" width="1" height="28" fill="#111" />
+                  <rect x="200" y="0" width="5" height="28" fill="#111" />
+                  <rect x="208" y="0" width="2" height="28" fill="#111" />
+                  <rect x="213" y="0" width="6" height="28" fill="#111" />
+                  <rect x="222" y="0" width="2" height="28" fill="#111" />
+                  <rect x="227" y="0" width="4" height="28" fill="#111" />
+                  <rect x="234" y="0" width="2" height="28" fill="#111" />
+                  <rect x="238" y="0" width="2" height="28" fill="#111" />
+                </svg>
+              </div>
+              <div class="text-[9px] font-mono tracking-[0.3em] text-neutral-500 mt-1">NX·99084·INSTITUTIONAL</div>
+            </div>
+          </div>
+
+          <!-- Button -->
+          <div class="mt-5 pt-3 border-t border-dashed border-neutral-400 flex justify-center">
+            <a href="contact.html" class="balloon-btn balloon-btn-full balloon-btn-sm">
+              <span>REQUEST MANDATE</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bottom Jagged Sawtooth Perforation -->
+        <div class="w-full h-3 overflow-hidden leading-none -mt-[1px]">
+          <svg class="w-full h-3 fill-[#fcfcfb]" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <polygon
+              points="0,0 5,12 10,0 15,12 20,0 25,12 30,0 35,12 40,0 45,12 50,0 55,12 60,0 65,12 70,0 75,12 80,0 85,12 90,0 95,12 100,0 105,12 110,0 115,12 120,0 125,12 130,0 135,12 140,0 145,12 150,0 155,12 160,0 165,12 170,0 175,12 180,0 185,12 190,0 195,12 200,0">
+            </polygon>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- Zero Hidden Fees Breakdown -->
+    <div class="card-glass p-5 sm:p-8 border border-white/15 reveal">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+        <h3 class="text-xl sm:text-2xl font-black text-white uppercase">Comparative Architecture: Nolax vs Traditional Funds</h3>
+        <span class="lg:hidden text-[10px] font-mono text-[#8cbfe8] bg-[#3876ba]/20 px-2.5 py-1 rounded-full border border-[#8cbfe8]/30 inline-block w-fit">← Swipe to compare →</span>
+      </div>
+      <div class="overflow-x-auto -mx-2 px-2 pb-2">
+        <table class="w-full min-w-[540px] text-left font-mono text-xs text-slate-200">
+          <thead class="border-b border-white/10 text-white uppercase">
+            <tr>
+              <th class="py-3">Feature</th>
+              <th class="py-3 text-red-400">Traditional Wealth Management</th>
+              <th class="py-3 text-[#8cbfe8]">Nolax Autonomous Engine</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5">
+            <tr>
+              <td class="py-3.5 font-bold text-white">Management Fee</td>
+              <td class="py-3.5 text-red-400">2.0% - 2.5% fixed every single year</td>
+              <td class="py-3.5 text-emerald-400 font-bold">ZERO. Pure performance-aligned.</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 font-bold text-white">Exit Load / Lock-in</td>
+              <td class="py-3.5 text-red-400">1% to 3% penalty if exited before 1-3 years</td>
+              <td class="py-3.5 text-emerald-400 font-bold">ZERO. Withdraw your money anytime.</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 font-bold text-white">Hidden Broker Churn</td>
+              <td class="py-3.5 text-red-400">High commissions cut behind the scenes</td>
+              <td class="py-3.5 text-emerald-400 font-bold">ZERO. Direct exchange connectivity.</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 font-bold text-white">Reporting Speed</td>
+              <td class="py-3.5 text-slate-400">Monthly or quarterly delay PDF statements</td>
+              <td class="py-3.5 text-emerald-400 font-bold">Real-time live mobile dashboard 24/7.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer
+    class="bg-[#05070c]/90 backdrop-blur-md border-t border-white/15 py-10 text-center text-[11px] font-mono text-slate-400 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>© 2026 NOLAX TECHNOLOGIES INC. • PROCEDURAL CLOUD ENGINE</div>
+      <div class="flex gap-4">
+        <a href="index.html" class="hover:text-white">Home</a>
+        <a href="about.html" class="hover:text-white">About</a>
+        <a href="services.html" class="hover:text-white">Services</a>
+        <a href="works.html" class="hover:text-white">Works</a>
+        <a href="contact.html" class="hover:text-white">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="cloud-shader.js"></script>
+  <script src="tech-text-init.js"></script>
+  <script src="fluid-glass-init.js"></script>
+  <script src="paper-crumple-init.js"></script>
+  <script src="box-loader-init.js"></script>
+  <script src="balloon-button-init.js"></script>
+  <script src="mobile-nav.js"></script>
+  <script>
+    lucide.createIcons();
+    window.addEventListener('scroll', () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        document.getElementById('scrollProgress').style.width = (window.scrollY / docHeight) * 100 + '%';
+      }
+    });
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal, .card-glass').forEach(el => obs.observe(el));
+  </script>
+</body>
+
+</html>

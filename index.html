@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nolax — Autonomous AI Wealth & Algorithmic Growth</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="components/ui/FluidGlass.css">
+  <link rel="stylesheet" href="components/ui/box-loader.css">
+  <link rel="stylesheet" href="components/ui/balloon-button.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+    
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #07090e;
+      color: #ffffff;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      letter-spacing: -0.012em;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+      letter-spacing: -0.028em;
+    }
+
+    /* Fixed Fullscreen Background WebGL Cloud Shader */
+    #globalCloudCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: -10;
+    }
+
+    /* Subtle Dark Vignette & Contrast Overlay */
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 20%, rgba(7, 9, 14, 0.25) 0%, rgba(7, 9, 14, 0.65) 100%);
+      pointer-events: none;
+      z-index: -5;
+    }
+
+    /* Scroll Reveal Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 80ms; }
+    .reveal-delay-2 { transition-delay: 160ms; }
+    .reveal-delay-3 { transition-delay: 240ms; }
+
+    /* Top Reading Progress Bar */
+    #scrollProgress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3876ba, #8cbfe8, #0038ff);
+      z-index: 100;
+      width: 0%;
+      transition: width 0.1s ease-out;
+    }
+
+    .ext-radius {
+      border-radius: 6px;
+    }
+
+    /* Frosted Translucent Glass Card over the Cloud Shader */
+    .card-glass {
+      background: rgba(10, 15, 26, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card-glass:hover {
+      border-color: #8cbfe8;
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px -10px rgba(56, 118, 186, 0.4);
+    }
+
+    /* Thermal Receipt Styling */
+    .receipt-card {
+      background-color: #fcfcfb;
+      background-image: 
+        radial-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 0),
+        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.015) 3px, rgba(0, 0, 0, 0.015) 4px);
+      background-size: 8px 8px, 100% 4px;
+      color: #0b0d12;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      position: relative;
+    }
+
+    .receipt-wrapper {
+      filter: drop-shadow(0 22px 35px rgba(0, 0, 0, 0.65));
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .receipt-wrapper:hover {
+      transform: translateY(-8px);
+      filter: drop-shadow(0 32px 55px rgba(56, 118, 186, 0.45));
+    }
+
+    .receipt-featured {
+      filter: drop-shadow(0 26px 48px rgba(56, 118, 186, 0.6));
+    }
+
+    .btn-azure {
+      background-color: #3876ba;
+      color: #ffffff;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-azure:hover {
+      background-color: #2b619d;
+      box-shadow: 0 0 25px rgba(56, 118, 186, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .ticker-scroll {
+      animation: ticker 25s linear infinite;
+    }
+
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .testimonial-marquee {
+      display: flex;
+      width: max-content;
+      animation: testimonialMarquee 60s linear infinite;
+    }
+    .testimonial-marquee:hover {
+      animation-play-state: paused;
+    }
+    @keyframes testimonialMarquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .mask-x-gradient {
+      mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen relative">
+
+  <!-- ==================== INTRO 3D BOX LOADER (1-100% PRELOADER) ==================== -->
+  <div id="sitePreloader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#07090e] text-white transition-all duration-700 select-none">
+    <div class="relative flex flex-col items-center justify-center p-8 text-center">
+      
+      <!-- 3D Box Loader from React Bits -->
+      <div class="mb-14 relative flex items-center justify-center">
+        <div class="boxes">
+          <div class="box box-1">
+            <div class="face face-front"></div>
+            <div class="face face-right"></div>
+            <div class="face face-top"></div>
+            <div class="face face-back"></div>
+          </div>
+          <div class="box box-2">
+            <div class="face face-front"></div>
+            <div class="face face-right"></div>
+            <div class="face face-top"></div>
+            <div class="face face-back"></div>
+          </div>
+          <div class="box box-3">
+            <div class="face face-front"></div>
+            <div class="face face-right"></div>
+            <div class="face face-top"></div>
+            <div class="face face-back"></div>
+          </div>
+          <div class="box box-4">
+            <div class="face face-front"></div>
+            <div class="face face-right"></div>
+            <div class="face face-top"></div>
+            <div class="face face-back"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1 to 100 Counter -->
+      <div class="font-mono text-5xl sm:text-6xl font-black tracking-tight text-white mb-4 drop-shadow-[0_4px_24px_rgba(56,118,186,0.6)]">
+        <span id="preloaderCount">0</span><span class="text-[#8cbfe8] text-3xl font-bold ml-1">%</span>
+      </div>
+
+      <!-- Progress Track -->
+      <div class="w-56 sm:w-72 h-1.5 bg-white/10 rounded-full overflow-hidden border border-white/10 shadow-inner">
+        <div id="preloaderBar" class="h-full bg-gradient-to-r from-[#3876ba] via-[#8cbfe8] to-white w-0 transition-all duration-75"></div>
+      </div>
+
+      <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mt-4">
+        Loading Autonomous Orderbook Streams...
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GLOBAL FIXED CLOUD SHADER BACKGROUND ==================== -->
+  <canvas id="globalCloudCanvas" data-cloud-shader></canvas>
+  <div class="bg-overlay"></div>
+
+  <!-- Top Scroll Progress Bar -->
+  <div id="scrollProgress"></div>
+
+  <!-- ==================== HEADER (SMOOTH SCROLL NAVIGATION) ==================== -->
+  <header class="sticky top-0 z-50 bg-[#3876ba]/80 backdrop-blur-md border-b border-white/20 text-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#home" class="flex items-center gap-3 group">
+        <div class="flex items-center gap-1">
+          <span class="w-1.5 h-3 bg-white ext-radius"></span>
+          <span class="w-1.5 h-6 bg-white ext-radius"></span>
+          <span class="w-1.5 h-4 bg-sky-200 ext-radius"></span>
+          <span class="w-1.5 h-7 bg-white ext-radius"></span>
+        </div>
+        <span class="text-2xl font-black tracking-tighter text-white uppercase drop-shadow">nolax</span>
+      </a>
+
+      <!-- Smooth Scroll Nav Links (Desktop) -->
+      <nav class="hidden lg:flex items-center gap-7 text-[13.33px] font-semibold text-white/90">
+        <a href="#home" class="hover:text-white transition-colors">Home</a>
+        <a href="#pillars" class="hover:text-white transition-colors">Pillars</a>
+        <a href="#about" class="hover:text-white transition-colors">About</a>
+        <a href="#services" class="hover:text-white transition-colors">Services</a>
+        <a href="#works" class="hover:text-white transition-colors">Works</a>
+        <a href="#testimonials" class="hover:text-white transition-colors">Stories</a>
+        <a href="#pricing" class="hover:text-white transition-colors">Plans</a>
+        <a href="#calculator" class="hover:text-white transition-colors">Calculator</a>
+        <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+      </nav>
+
+      <!-- Right CTAs & Mobile Hamburger -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <a href="#contact" class="balloon-btn balloon-btn-sm">
+          <span>Let's chat</span>
+          <span>👋</span>
+        </a>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="mobileMenuBtn" aria-label="Toggle navigation menu" class="lg:hidden p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all flex items-center justify-center">
+          <svg class="w-6 h-6 menu-open-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg class="w-6 h-6 menu-close-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobileMenu" class="lg:hidden hidden border-t border-white/15 bg-[#07090e]/95 backdrop-blur-2xl px-6 py-6 shadow-2xl transition-all duration-300">
+      <div class="flex flex-col space-y-3 font-semibold text-sm text-white/90">
+        <a href="#home" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Home</a>
+        <a href="#pillars" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Pillars</a>
+        <a href="#about" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">About</a>
+        <a href="#services" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Services</a>
+        <a href="#works" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Works</a>
+        <a href="#testimonials" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Stories</a>
+        <a href="#pricing" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Plans</a>
+        <a href="#calculator" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Calculator</a>
+        <a href="#contact" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Contact</a>
+      </div>
+      <div class="mt-5 pt-3">
+        <a href="#contact" class="balloon-btn balloon-btn-full py-3 mobile-nav-link">
+          <span>Book Strategy Call</span>
+          <span>👋</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== SECTION 1: HERO (#home) ==================== -->
+  <section id="home" class="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-16">
+    <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+      
+      <!-- Subtitle matching Eloqwnt -->
+      <p class="text-white/90 text-sm sm:text-base font-medium max-w-xl mx-auto mb-4 tracking-tight reveal">
+        We help ambitious investors scale capital with autonomous AI execution and zero commission leakage.
+      </p>
+
+      <!-- Interactive TechText Wordmark (Drag & Click to Kick) -->
+      <div class="w-full h-32 sm:h-44 relative mb-4 cursor-pointer select-none reveal" 
+           data-tech-text 
+           data-text="NOLAX AI" 
+           data-font-size="120" 
+           data-color="#ffffff" 
+           data-accent="#ffffff">
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-[1.08] mb-8 uppercase drop-shadow-[0_4px_24px_rgba(0,0,0,0.35)] reveal reveal-delay-1">
+        Strategy-led algorithmic engine for modern wealth
+      </h1>
+
+      <p class="text-white/85 text-sm sm:text-base max-w-2xl mx-auto mb-10 leading-relaxed font-normal drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)] reveal reveal-delay-2">
+        Eliminate emotional market noise and human advisory friction. Nolax deploys deterministic machine-learning algorithms that intercept institutional orderbook momentum with mathematical precision and zero commission drag.
+      </p>
+
+      <!-- Balloon Button CTAs -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-5 mb-10 reveal reveal-delay-3">
+        <a href="#contact" class="balloon-btn balloon-btn-lg">
+          <span>Book strategy call</span>
+          <span>👈</span>
+        </a>
+        <a href="#works" class="balloon-btn balloon-btn-lg">
+          <span>Explore performance</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <!-- Down Arrow Indicator -->
+      <div class="flex justify-center reveal">
+        <a href="#pillars" class="w-12 h-12 rounded-full bg-slate-950 hover:bg-[#3876ba] text-white flex items-center justify-center transition-all shadow-xl border border-white/20">
+          <i data-lucide="arrow-down" class="w-5 h-5"></i>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== RUNNING TICKER BAR ==================== -->
+  <div class="w-full bg-[#3876ba]/90 backdrop-blur-md py-3.5 overflow-hidden whitespace-nowrap text-white font-mono text-[12px] font-bold tracking-widest uppercase border-y border-white/20 shadow-md">
+    <div class="flex ticker-scroll">
+      <span class="mx-6">/ OPERATING TIER UPGRADE · POST-NOLAX</span>
+      <span class="mx-6">/ ₹120CR+ CAPITAL MANAGED</span>
+      <span class="mx-6">/ 34.8% NET ANNUALIZED ALPHA</span>
+      <span class="mx-6">/ ZERO HIDDEN BROKERAGE OR COMMISSIONS</span>
+      <span class="mx-6">/ 24/7 PROCEDURAL CLOUD RADAR</span>
+      <span class="mx-6">/ NON-CUSTODIAL EXECUTION · DIRECT ROUTING</span>
+      <!-- Loop duplicate -->
+      <span class="mx-6">/ OPERATING TIER UPGRADE · POST-NOLAX</span>
+      <span class="mx-6">/ ₹120CR+ CAPITAL MANAGED</span>
+      <span class="mx-6">/ 34.8% NET ANNUALIZED ALPHA</span>
+      <span class="mx-6">/ ZERO HIDDEN BROKERAGE OR COMMISSIONS</span>
+      <span class="mx-6">/ 24/7 PROCEDURAL CLOUD RADAR</span>
+      <span class="mx-6">/ NON-CUSTODIAL EXECUTION · DIRECT ROUTING</span>
+    </div>
+  </div>
+
+  <!-- ==================== SECTION 2: 3 PILLARS (#pillars) ==================== -->
+  <section id="pillars" class="py-24 max-w-7xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 reveal">
+      <div class="max-w-2xl">
+        <span class="text-[11px] font-mono uppercase tracking-widest text-[#8cbfe8] font-bold">THE CORE ADVANTAGE</span>
+        <h2 class="text-3xl sm:text-5xl font-black text-white mt-2 tracking-tight uppercase">
+          Market confusion eliminated. <br/>Algorithmic velocity unlocked.
+        </h2>
+      </div>
+      <p class="text-slate-200 text-sm max-w-md leading-relaxed">
+        While traditional advisers drown clients in fine print and 40-page PDFs, Nolax operates with mathematical speed and zero secret deductions.
+      </p>
+    </div>
+
+    <!-- 3 Big Bento Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Card 1 -->
+      <div class="card-glass p-6 sm:p-8 flex flex-col justify-between h-[360px] reveal reveal-delay-1 border border-white/15">
+        <div>
+          <span class="text-[11px] font-mono text-[#8cbfe8] font-bold uppercase tracking-wider">PILLAR 01</span>
+          <h3 class="text-xl sm:text-2xl font-black text-white mt-2 mb-3 tracking-tight uppercase">PREDICTIVE AI RADAR</h3>
+          <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+            Continuously scans orderbook liquidity flows, institutional volume footprints, and volatility microstructures to execute precise entries and automated risk-parity exits.
+          </p>
+        </div>
+        <div class="pt-6 border-t border-white/10 flex items-center justify-between text-xs font-bold text-white">
+          <span class="text-slate-300">Explore Quant Stack</span>
+          <a href="#services" class="w-8 h-8 ext-radius bg-white text-black flex items-center justify-center hover:bg-[#3876ba] hover:text-white transition-colors">
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card-glass p-6 sm:p-8 flex flex-col justify-between h-[360px] reveal reveal-delay-2 border border-white/15">
+        <div>
+          <span class="text-[11px] font-mono text-emerald-300 font-bold uppercase tracking-wider">PILLAR 02</span>
+          <h3 class="text-xl sm:text-2xl font-black text-white mt-2 mb-3 tracking-tight uppercase">DETERMINISTIC TRANSPARENCY</h3>
+          <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+            Zero 40-page opaque PDF statements. Direct real-time cryptographic ledger displaying live allocations, executed trade receipts, and audited net returns 24/7.
+          </p>
+        </div>
+        <div class="pt-6 border-t border-white/10 flex items-center justify-between text-xs font-bold text-white">
+          <span class="text-slate-300">See Pricing Rules</span>
+          <a href="#pricing" class="w-8 h-8 ext-radius bg-white text-black flex items-center justify-center hover:bg-[#3876ba] hover:text-white transition-colors">
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card-glass p-6 sm:p-8 flex flex-col justify-between h-[360px] reveal reveal-delay-3 border border-white/15">
+        <div>
+          <span class="text-[11px] font-mono text-sky-300 font-bold uppercase tracking-wider">PILLAR 03</span>
+          <h3 class="text-xl sm:text-2xl font-black text-white mt-2 mb-3 tracking-tight uppercase">INSTITUTIONAL TERMINAL</h3>
+          <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+            Executive mobile and desktop interface providing sub-second portfolio telemetry, risk-parity gauges, and instant one-tap liquidity withdrawal with zero lock-in.
+          </p>
+        </div>
+        <div class="pt-6 border-t border-white/10 flex items-center justify-between text-xs font-bold text-white">
+          <span class="text-slate-300">View Live Signals</span>
+          <a href="#works" class="w-8 h-8 ext-radius bg-white text-black flex items-center justify-center hover:bg-[#3876ba] hover:text-white transition-colors">
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== METRICS STRIP ==================== -->
+  <section class="py-16 bg-[#0a0f1a]/70 backdrop-blur-md border-y border-white/15">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 reveal">
+        <div>
+          <div class="text-4xl sm:text-5xl font-black text-white font-mono">₹120CR+</div>
+          <div class="text-[11px] font-mono uppercase tracking-wider text-[#8cbfe8] font-bold mt-1">CAPITAL AUTOMATED</div>
+        </div>
+        <div>
+          <div class="text-4xl sm:text-5xl font-black text-white font-mono">+34.8%</div>
+          <div class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-bold mt-1">AVERAGE ALPHA</div>
+        </div>
+        <div>
+          <div class="text-4xl sm:text-5xl font-black text-white font-mono">0.02S</div>
+          <div class="text-[11px] font-mono uppercase tracking-wider text-[#8cbfe8] font-bold mt-1">EXECUTION SPEED</div>
+        </div>
+        <div>
+          <div class="text-4xl sm:text-5xl font-black text-white font-mono">ZERO</div>
+          <div class="text-[11px] font-mono uppercase tracking-wider text-purple-400 font-bold mt-1">SECRET COMMISSIONS</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 4: ABOUT & MANIFESTO (#about) ==================== -->
+  <section id="about" class="py-24 max-w-7xl mx-auto px-6 border-b border-white/15">
+    <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+      <span class="text-[11px] font-mono uppercase tracking-widest text-[#8cbfe8] font-bold block mb-3">MANIFESTO &amp; PHILOSOPHY</span>
+      <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
+        WE BUILT NOLAX TO KILL FINANCIAL NOISE AND MARKET JARGON.
+      </h2>
+      <p class="text-slate-200 text-sm sm:text-base mt-4 leading-relaxed">
+        The traditional investment ecosystem profits by confusing you with 40-page PDFs, misleading fees, and emotional televised pundits. Nolax replaces them with autonomous algorithmic execution.
+      </p>
+    </div>
+
+    <!-- Side-by-side: The Old Broken System vs The Nolax Engine -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch mb-16">
+      
+      <!-- The Old Broken System -->
+      <div class="card-glass p-6 sm:p-8 border border-red-500/30 reveal flex flex-col justify-between">
+        <div>
+          <span class="text-[11px] font-mono uppercase tracking-widest text-red-400 font-bold">THE OLD BROKEN SYSTEM</span>
+          <h3 class="text-2xl font-black text-white mt-2 mb-4 uppercase">Legacy Advisory &amp; Hidden Deductions</h3>
+          <ul class="space-y-3 text-xs sm:text-sm text-slate-300">
+            <li class="flex items-start gap-3">
+              <span class="w-5 h-5 ext-radius bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 text-xs font-bold">✕</span>
+              <span><strong>Emotional Bias:</strong> Human fund managers chasing market tops due to FOMO and selling bottoms in panic.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-5 h-5 ext-radius bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 text-xs font-bold">✕</span>
+              <span><strong>Hidden Deductions:</strong> Ongoing expense ratios and churn consuming 25%–30% of lifetime compounding returns.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-5 h-5 ext-radius bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 text-xs font-bold">✕</span>
+              <span><strong>Opaque Statements:</strong> 40-page ambiguous PDF disclosures engineered to conceal underperformance and fee leakage.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- The Nolax Engine -->
+      <div class="card-glass p-6 sm:p-8 border border-[#3876ba] bg-[#3876ba]/20 reveal">
+        <span class="text-[11px] font-mono uppercase tracking-widest text-[#8cbfe8] font-bold">THE NOLAX ENGINE</span>
+        <h3 class="text-2xl font-black text-white mt-2 mb-6 uppercase">Deterministic Alpha & Transparent Architecture</h3>
+        <ul class="space-y-4 text-xs sm:text-sm text-white">
+          <li class="flex items-start gap-3">
+            <span class="w-5 h-5 ext-radius bg-[#3876ba] text-white flex items-center justify-center shrink-0 text-xs font-bold">✓</span>
+            <span><strong>Autonomous Precision:</strong> Cold mathematical algorithms executing high-probability momentum entries with automated risk parity.</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="w-5 h-5 ext-radius bg-[#3876ba] text-white flex items-center justify-center shrink-0 text-xs font-bold">✓</span>
+            <span><strong>Zero Secret Deductions:</strong> 100% performance-aligned pricing. Net alpha displayed on your ledger belongs entirely to you.</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="w-5 h-5 ext-radius bg-[#3876ba] text-white flex items-center justify-center shrink-0 text-xs font-bold">✓</span>
+            <span><strong>Real-Time Ledger Telemetry:</strong> Sub-second portfolio monitoring across mobile and desktop with instant one-tap liquidity withdrawal.</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- 3 Pillars of Nolax Tech -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-glass p-6 sm:p-8 reveal">
+        <div class="text-2xl text-[#8cbfe8] mb-3 font-mono font-bold">01 / ORDERBOOK RADAR</div>
+        <h4 class="text-xl font-black text-white mb-2 uppercase">Quantitative Speed</h4>
+        <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+          Orderbook liquidity flows and volume velocity replace subjective opinions or television news sentiment.
+        </p>
+      </div>
+      <div class="card-glass p-6 sm:p-8 reveal reveal-delay-1">
+        <div class="text-2xl text-emerald-400 mb-3 font-mono font-bold">02 / CAPITAL SHIELD</div>
+        <h4 class="text-xl font-black text-white mb-2 uppercase">Risk Parity Guard</h4>
+        <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+          Automated stop-losses trigger within 20 milliseconds during sudden flash dips to protect core principal capital.
+        </p>
+      </div>
+      <div class="card-glass p-6 sm:p-8 reveal reveal-delay-2">
+        <div class="text-2xl text-purple-400 mb-3 font-mono font-bold">03 / REAL-TIME LEDGER</div>
+        <h4 class="text-xl font-black text-white mb-2 uppercase">Pure Transparency</h4>
+        <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+          Every rupee allocation and trade ledger is rendered in real time without delays or monthly obfuscation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 5: SERVICES & QUANT STACK (#services) ==================== -->
+  <section id="services" class="py-24 max-w-7xl mx-auto px-6 border-b border-white/15">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 reveal">
+      <div>
+        <span class="text-[11px] font-mono uppercase text-[#8cbfe8] font-bold tracking-widest">QUANTITATIVE CAPABILITIES</span>
+        <h2 class="text-3xl sm:text-5xl font-black text-white mt-2 uppercase">SMART ARCHITECTURE FOR ALPHA</h2>
+      </div>
+      <p class="text-slate-200 text-sm max-w-md">
+        From 24/7 predictive orderbook scanning to sub-20ms capital shields, explore the engine powering modern portfolios.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      
+      <!-- Service 01 -->
+      <div class="card-glass p-10 flex flex-col justify-between reveal">
+        <div>
+          <span class="text-[11px] font-mono uppercase text-[#8cbfe8] font-bold tracking-wider">SERVICE 01</span>
+          <h3 class="text-2xl font-black text-white mt-2 mb-3 uppercase">AI Market Radar</h3>
+          <p class="text-slate-200 text-xs sm:text-sm leading-relaxed mb-6">
+            Scans over 4,000 tick-by-tick orderbook data points every single second across liquid equity and index futures pools, identifying whale movements before public rallies.
+          </p>
+          <div class="space-y-2 text-xs text-white/90 font-mono">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 ext-radius bg-[#8cbfe8]"></span>
+              Whale Accumulation Footprint Tracking
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 ext-radius bg-[#8cbfe8]"></span>
+              Orderbook Microstructure Imbalance Alerts
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 ext-radius bg-[#8cbfe8]"></span>
+              94.8% Backtested Signal Precision
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/10 flex justify-between items-center text-xs font-bold">
+          <span class="text-slate-400">Active 24/7 across all tiers</span>
+          <a href="#contact" class="text-[#8cbfe8] hover:underline flex items-center gap-1 font-mono">REQUEST SPECS →</a>
+        </div>
+      </div>
+
+      <!-- Service 02 -->
+      <div class="card-glass p-10 flex flex-col justify-between reveal">
+        <div>
+          <span class="text-[11px] font-mono uppercase text-emerald-300 font-bold tracking-wider">SERVICE 02</span>
+          <h3 class="text-2xl font-black text-white mt-2 mb-3 uppercase">Autonomous Capital Shield</h3>
+          <p class="text-slate-200 text-xs sm:text-sm leading-relaxed mb-6">
+            Downside risk mitigation is mathematically hard-coded into every active allocation. The second flash dumps trigger liquidity anomalies, capital switches to cash hedges.
+          </p>
+          <div class="space-y-2 text-xs text-white/90 font-mono">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 ext-radius bg-emerald-400"></span>
+              20ms Automated Circuit Breaker Exit
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 ext-radius bg-emerald-400"></span>
+              Volatility Drag Elimination Architecture
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 ext-radius bg-emerald-400"></span>
+              0% Overnight Gap Shock Exposure
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/10 flex justify-between items-center text-xs font-bold">
+          <span class="text-slate-400">Hard-coded risk rules</span>
+          <a href="#contact" class="text-emerald-300 hover:underline flex items-center gap-1 font-mono">VIEW PROTOCOL →</a>
+        </div>
+      </div>
+
+      <!-- Service 03 -->
+      <div class="card-glass p-10 flex flex-col justify-between reveal">
+        <div>
+          <span class="text-[11px] font-mono uppercase text-sky-300 font-bold tracking-wider">SERVICE 03</span>
+          <h3 class="text-2xl font-black text-white mt-2 mb-3 uppercase">High-Frequency Alpha Harvester</h3>
+          <p class="text-slate-200 text-xs sm:text-sm leading-relaxed mb-6">
+            Capitalizes on short-term mispricings and volatility spikes that human traders miss, capturing micro-gains that compound exponentially into annualized alpha.
+          </p>
+          <div class="space-y-2 text-xs text-white/90 font-mono">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 ext-radius bg-sky-300"></span>
+              Cross-Asset Arbitrage Algorithms
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 ext-radius bg-sky-300"></span>
+              Statistical Mean-Reversion Engines
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 ext-radius bg-sky-300"></span>
+              Compounded Daily Reinvestment Cycle
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/10 flex justify-between items-center text-xs font-bold">
+          <span class="text-slate-400">Optimized for Pro & Institutional</span>
+          <a href="#pricing" class="text-sky-300 hover:underline flex items-center gap-1 font-mono">EXPLORE TIERS →</a>
+        </div>
+      </div>
+
+      <!-- Service 04 -->
+      <div class="card-glass p-10 flex flex-col justify-between reveal">
+        <div>
+          <span class="text-[11px] font-mono uppercase text-purple-300 font-bold tracking-wider">SERVICE 04</span>
+          <h3 class="text-2xl font-black text-white mt-2 mb-3 uppercase">Custom Institutional Mandates</h3>
+          <p class="text-slate-200 text-xs sm:text-sm leading-relaxed mb-6">
+            Tailor quantitative execution to your exact liquidity, drawdown tolerances, and benchmark targets with bespoke parameters and dedicated engineering support.
+          </p>
+          <div class="space-y-2 text-xs text-white/90 font-mono">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 ext-radius bg-purple-400"></span>
+              Dedicated Private Quant Instance
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 ext-radius bg-purple-400"></span>
+              Custom Hedging & FX Strategy Pairing
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 ext-radius bg-purple-400"></span>
+              Multi-Custodian API Integration
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/10 flex justify-between items-center text-xs font-bold">
+          <span class="text-slate-400">For allocations > ₹50L</span>
+          <a href="#contact" class="text-purple-300 hover:underline flex items-center gap-1 font-mono">BOOK CONSULT →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 6: WORKS & VERIFIED PERFORMANCE (#works) ==================== -->
+  <section id="works" class="py-24 max-w-7xl mx-auto px-6 border-b border-white/15">
+    <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+      <span class="text-[11px] font-mono uppercase tracking-widest text-[#8cbfe8] font-bold block mb-3">AUDITED ALPHA PERFORMANCE</span>
+      <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
+        RAW PERFORMANCE LEDGER. ZERO SUGARCOATING.
+      </h2>
+      <p class="text-slate-200 text-sm sm:text-base mt-4 leading-relaxed">
+        Witness how Nolax mathematical models performed through furious bull momentum, chop periods, and abrupt flash crashes.
+      </p>
+    </div>
+
+    <!-- Analytics Overview Card (Exact Replication of Image 1) -->
+    <div class="bg-white text-slate-900 rounded-2xl p-4 sm:p-8 shadow-2xl border border-slate-200/90 mb-16 reveal max-w-4xl mx-auto">
+      
+      <!-- Card Header -->
+      <div class="flex items-start justify-between gap-4 mb-6">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 font-sans">Traffic Overview</h3>
+          <p class="text-xs text-slate-500 font-normal mt-0.5">Visitors and signups for Acme, last 30 days</p>
+          <div class="flex items-center gap-2.5 mt-2">
+            <span id="analyticsMetric" class="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight font-sans">134,100</span>
+            <span id="analyticsChange" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold text-slate-700 bg-slate-100 border border-slate-200 font-sans">
+              ↑ +38.0%
+            </span>
+          </div>
+        </div>
+
+        <!-- Timeframe Select Dropdown -->
+        <div class="relative inline-block text-left">
+          <button id="timeframeBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-sm transition-colors cursor-pointer">
+            <span id="timeframeLabel">30 Days</span>
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div id="timeframeMenu" class="hidden absolute right-0 mt-1 w-32 bg-white rounded-lg shadow-xl border border-slate-200 py-1 z-30 font-sans text-xs">
+            <button onclick="switchAnalyticsTimeframe('7D')" class="w-full text-left px-3 py-1.5 hover:bg-slate-100 font-medium text-slate-700">7 Days</button>
+            <button onclick="switchAnalyticsTimeframe('30D')" class="w-full text-left px-3 py-1.5 hover:bg-slate-100 font-semibold text-slate-900 bg-slate-50">30 Days</button>
+            <button onclick="switchAnalyticsTimeframe('90D')" class="w-full text-left px-3 py-1.5 hover:bg-slate-100 font-medium text-slate-700">90 Days</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart Canvas -->
+      <div class="w-full h-72 sm:h-80">
+        <canvas id="performanceChart"></canvas>
+      </div>
+
+      <!-- Bottom Legend matching Image 1 -->
+      <div class="flex items-center justify-center gap-6 mt-5 text-xs font-medium text-slate-600 font-sans">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-sm bg-slate-900"></span>
+          <span>Visitors</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-sm bg-slate-400"></span>
+          <span>Signups</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Real Trade Case Studies -->
+    <div class="space-y-6">
+      
+      <!-- Case 01 -->
+      <div class="card-glass p-6 sm:p-8 flex flex-col md:flex-row justify-between gap-8 items-start reveal">
+        <div class="max-w-2xl">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-3 py-1 ext-radius text-[11px] font-mono font-bold bg-[#3876ba] text-white">MOMENTUM SURGE BOOKED</span>
+            <span class="text-xs text-slate-300 font-mono">OCTOBER 2026</span>
+          </div>
+          <h4 class="text-2xl font-black text-white mb-3 uppercase">Tech & Energy Breakout (+28.4% Captured)</h4>
+          <p class="text-slate-200 text-xs sm:text-sm leading-relaxed mb-4">
+            While television analysts warned of global macro slowdowns, Nolax detected a massive institutional spot order cluster in semiconductor tech manufacturing. Capital entered at morning base consolidation.
+          </p>
+          <div class="flex flex-wrap gap-4 text-xs font-mono text-slate-200">
+            <span>Entry: <strong>₹24,120</strong></span>
+            <span>Exit: <strong>₹30,965</strong></span>
+            <span>Holding Period: <strong>14 Days</strong></span>
+            <span class="text-emerald-400">Net Alpha: <strong>+28.4%</strong></span>
+          </div>
+        </div>
+        <div class="w-full md:w-auto shrink-0 bg-white/5 border border-white/10 p-5 rounded ext-radius font-mono text-xs">
+          <div class="text-slate-400 mb-1">RISK ADJUSTED RATIO</div>
+          <div class="text-3xl font-black text-[#8cbfe8]">3.42 Sharpe</div>
+          <div class="text-[10px] text-emerald-400 mt-1">✓ Max Drawdown &lt; 1.8%</div>
+        </div>
+      </div>
+
+
+      <!-- Case 02 -->
+      <div class="card-glass p-6 sm:p-8 flex flex-col md:flex-row justify-between gap-8 items-start reveal">
+        <div class="max-w-2xl">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-3 py-1 ext-radius text-[11px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400">FLASH DUMP SHIELDED</span>
+            <span class="text-xs text-slate-300 font-mono">AUGUST 2026</span>
+          </div>
+          <h4 class="text-2xl font-black text-white mb-3 uppercase">Sudden Index Drop (0% Capital Lost)</h4>
+          <p class="text-slate-200 text-xs sm:text-sm leading-relaxed mb-4">
+            During sudden geopolitical announcements, broader markets cratered -620 points in under 8 minutes. Nolax automated capital shield tripped within 18 milliseconds, shifting all leveraged assets into overnight T-Bills.
+          </p>
+          <div class="flex flex-wrap gap-4 text-xs font-mono text-slate-200">
+            <span>Market Drawdown: <strong class="text-red-400">-4.2%</strong></span>
+            <span>Nolax Position: <strong class="text-emerald-400">Cash / Hedges</strong></span>
+            <span>Re-entry: <strong>At Liquidity Bottom</strong></span>
+          </div>
+        </div>
+        <div class="w-full md:w-auto shrink-0 bg-white/5 border border-white/10 p-5 rounded ext-radius font-mono text-xs">
+          <div class="text-slate-400 mb-1">SHIELD REACTION TIME</div>
+          <div class="text-3xl font-black text-emerald-400">18.4 MS</div>
+          <div class="text-[10px] text-slate-300 mt-1">✓ Saved ₹4.8Cr Capital</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: TESTIMONIALS (SUCCESS STORIES) (#testimonials) ==================== -->
+  <section id="testimonials" class="py-24 overflow-hidden border-b border-white/15">
+    <div class="max-w-7xl mx-auto px-6 text-center mb-14 reveal">
+      <span class="text-[11px] font-mono uppercase tracking-widest text-[#8cbfe8] font-bold block mb-3">CLIENT VERIFICATIONS</span>
+      <h2 class="text-3xl sm:text-5xl font-black text-white tracking-[-0.04em] uppercase">
+        Success Stories
+      </h2>
+      <p class="mt-3.5 text-slate-300 text-base sm:text-xl tracking-[-0.015em] max-w-2xl mx-auto">
+        Real stories from people who use and love our product every day
+      </p>
+    </div>
+
+    <!-- Infinite Marquee Ticker with Edge Gradient Mask -->
+    <div class="mask-x-gradient relative w-full overflow-hidden py-4">
+      <div class="testimonial-marquee">
+        
+        <!-- ==================== SET 1 ==================== -->
+
+        <!-- 1. John Doe (Odd: flex-col-reverse) -->
+        <div class="mx-3 flex w-[300px] sm:w-[380px] shrink-0 flex-col-reverse">
+          <div class="rounded-xl border border-white/15 bg-[#0a0f1a]/85 backdrop-blur-md p-6 shadow-xl transition-all hover:border-[#8cbfe8]/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://cdn.21st.dev/assets/mirror/f7/f72a5321d9c055324b83d9aca5fa248af5f99213b63da015c188955f8b5f0223.jpg" alt="John Doe" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                <div>
+                  <p class="font-bold text-white text-sm">John Doe</p>
+                  <p class="text-slate-400 text-xs font-mono">Software Engineer • TechCorp</p>
+                </div>
+              </div>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                <svg role="img" viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+            </div>
+            <p class="mt-5 text-[15px] text-slate-200 leading-relaxed font-normal">
+              "This product has completely transformed the way we work. The efficiency and ease of use are unmatched!"
+            </p>
+          </div>
+          <div class="relative flex h-36 w-full items-center justify-center p-6 my-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] overflow-hidden group">
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <svg class="h-8 w-auto text-slate-400 group-hover:text-white transition-colors" viewBox="0 0 160 36" fill="currentColor">
+              <path d="M12 8h16v3.5H21V28h-3.5V11.5H12V8zm22 0h15v3.5h-11.5v4.5h10v3.5h-10V24h12v4H34V8zm22 0h15v3.5h-11.5v16.5H56V8zm19 0h3.5v8h9.5V8h3.5v20h-3.5v-8.5h-9.5V28H75V8zm23 0h14v3.5h-10.5v4.5h9v3.5h-9v8.5H98V8zm20 0h10c3.5 0 6.5 2.8 6.5 6.5v7c0 3.5-3 6.5-6.5 6.5h-10V8zm3.5 16.5h6.5c1.8 0 3-1.2 3-3v-7c0-1.8-1.2-3-3-3h-6.5v13z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 2. Sophia Lee (Even: flex-col) -->
+        <div class="mx-3 flex w-[300px] sm:w-[380px] shrink-0 flex-col">
+          <div class="rounded-xl border border-white/15 bg-[#0a0f1a]/85 backdrop-blur-md p-6 shadow-xl transition-all hover:border-[#8cbfe8]/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://cdn.21st.dev/assets/mirror/57/57501d26f0a1500d35e3feb532be175cda3d4ad5d9ab7dd2ddbc346a81687641.jpg" alt="Sophia Lee" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                <div>
+                  <p class="font-bold text-white text-sm">Sophia Lee</p>
+                  <p class="text-slate-400 text-xs font-mono">Data Analyst • InsightTech</p>
+                </div>
+              </div>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                <svg role="img" viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+            </div>
+            <p class="mt-5 text-[15px] text-slate-200 leading-relaxed font-normal">
+              "This tool has saved me hours of work! The analytics and reporting features are incredibly powerful."
+            </p>
+          </div>
+          <div class="relative flex h-36 w-full items-center justify-center p-6 my-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] overflow-hidden group">
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <svg class="h-8 w-auto text-slate-400 group-hover:text-white transition-colors" viewBox="0 0 160 36" fill="currentColor">
+              <path d="M10 8h3.5v20H10V8zm12 0h3.5l10 13.5V8H39v20h-3.5L25.5 14.5V28H22V8zm22 17l2.5-2.5c2 2 4.5 3 7 3 2.5 0 4-1 4-2.5 0-1.8-1.5-2.5-4.5-3.2-4.5-1-7.5-2.5-7.5-6.5 0-3.8 3.2-6.3 7.8-6.3 3.5 0 6.2 1.2 8.2 3.2l-2.2 2.8c-1.8-1.6-3.8-2.5-6-2.5-2.5 0-4 1-4 2.2 0 1.5 1.5 2.2 4.5 3 4.8 1.2 7.5 2.8 7.5 6.8 0 4-3.2 6.5-8.2 6.5-3.8 0-7-1.4-8.8-4zm24-17h3.5v20H68V8zm11 0h3.5v8h9.5V8h3.5v20h-3.5v-8.5h-9.5V28H79V8zm22 0h16v3.5h-6.2V28h-3.5V11.5H101V8z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 3. Michael Johnson (Odd: flex-col-reverse) -->
+        <div class="mx-3 flex w-[300px] sm:w-[380px] shrink-0 flex-col-reverse">
+          <div class="rounded-xl border border-white/15 bg-[#0a0f1a]/85 backdrop-blur-md p-6 shadow-xl transition-all hover:border-[#8cbfe8]/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://cdn.21st.dev/assets/mirror/55/55053b4b68b2e6eb9cd8d3057617e989f97b0fccf54eb0d46ab3f2907d2c27bb.jpg" alt="Michael Johnson" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                <div>
+                  <p class="font-bold text-white text-sm">Michael Johnson</p>
+                  <p class="text-slate-400 text-xs font-mono">UX Designer • DesignPro</p>
+                </div>
+              </div>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                <svg role="img" viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+            </div>
+            <p class="mt-5 text-[15px] text-slate-200 leading-relaxed font-normal">
+              "An amazing tool that simplifies complex tasks. Highly recommended for professionals in the industry."
+            </p>
+          </div>
+          <div class="relative flex h-36 w-full items-center justify-center p-6 my-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] overflow-hidden group">
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <svg class="h-8 w-auto text-slate-400 group-hover:text-white transition-colors" viewBox="0 0 160 36" fill="currentColor">
+              <path d="M12 8h10c5 0 8.5 3.5 8.5 10s-3.5 10-8.5 10H12V8zm3.5 16.5h6.5c3 0 5-2 5-6.5s-2-6.5-5-6.5h-6.5v13zm22-16.5h15v3.5h-11.5v4.5h10v3.5h-10V24h12v4H37.5V8zm22 17l2.5-2.5c2 2 4.5 3 7 3 2.5 0 4-1 4-2.5 0-1.8-1.5-2.5-4.5-3.2-4.5-1-7.5-2.5-7.5-6.5 0-3.8 3.2-6.3 7.8-6.3 3.5 0 6.2 1.2 8.2 3.2l-2.2 2.8c-1.8-1.6-3.8-2.5-6-2.5-2.5 0-4 1-4 2.2 0 1.5 1.5 2.2 4.5 3 4.8 1.2 7.5 2.8 7.5 6.8 0 4-3.2 6.5-8.2 6.5-3.8 0-7-1.4-8.8-4zm23-17h3.5v20H82.5V8zm11 0h10c3 0 5.5 1.8 5.5 5 0 2.5-1.5 4.2-3.8 4.8l4.5 10.2H115l-4-9.5h-4.5V28h-3.5V8zm3.5 7h6.5c1.5 0 2.5-.8 2.5-2s-1-2-2.5-2H97v4zm19-7h15v3.5h-11.5v4.5h10v3.5h-10V28h-3.5V8z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 4. Emily Davis (Even: flex-col) -->
+        <div class="mx-3 flex w-[300px] sm:w-[380px] shrink-0 flex-col">
+          <div class="rounded-xl border border-white/15 bg-[#0a0f1a]/85 backdrop-blur-md p-6 shadow-xl transition-all hover:border-[#8cbfe8]/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://cdn.21st.dev/assets/mirror/e1/e1e565477a93abaec6a4ffd6a6745e3620bba9e5c0c88418e4b7113667370d65.jpg" alt="Emily Davis" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                <div>
+                  <p class="font-bold text-white text-sm">Emily Davis</p>
+                  <p class="text-slate-400 text-xs font-mono">Marketing Specialist • BrandBoost</p>
+                </div>
+              </div>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                <svg role="img" viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+            </div>
+            <p class="mt-5 text-[15px] text-slate-200 leading-relaxed font-normal">
+              "I've seen a significant improvement in our team's productivity since we started using this service."
+            </p>
+          </div>
+          <div class="relative flex h-36 w-full items-center justify-center p-6 my-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] overflow-hidden group">
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <svg class="h-8 w-auto text-slate-400 group-hover:text-white transition-colors" viewBox="0 0 160 36" fill="currentColor">
+              <path d="M12 8h9.5c3.2 0 5.5 1.5 5.5 4.5 0 1.8-1 3.2-2.5 3.8 2 .6 3.2 2.2 3.2 4.2 0 3.2-2.5 4.8-6.2 4.8H12V8zm3.5 7h6c1.2 0 2.2-.6 2.2-1.8 0-1.2-1-1.8-2.2-1.8h-6v3.6zm0 6.5h6.5c1.4 0 2.5-.6 2.5-2 0-1.4-1.1-2-2.5-2h-6.5v4zm20-13.5h10c3 0 5.5 1.8 5.5 5 0 2.5-1.5 4.2-3.8 4.8l4.5 10.2H47l-4-9.5h-4.5V28H35V8zm3.5 7h6.5c1.5 0 2.5-.8 2.5-2s-1-2-2.5-2h-6.5v4zm20-7h3.5l10 20H65l-2-4.5h-8l-2 4.5h-3.5L60 8zm-1.5 12h6.5L61.7 13 58.5 20zm20.5-12h9.5c3.5 0 6 2 6 5.5 0 2-1 3.5-2.8 4.5 2.5.8 3.8 2.5 3.8 5 0 3.5-2.8 5.8-7 5.8H79V8zm3.5 7.5h5.5c1.5 0 2.5-.8 2.5-2s-1-2-2.5-2h-5.5v4zm0 6.5h6c1.6 0 2.8-.8 2.8-2.2 0-1.4-1.2-2.2-2.8-2.2h-6v4.4z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 5. Daniel Martinez (Odd: flex-col-reverse) -->
+        <div class="mx-3 flex w-[300px] sm:w-[380px] shrink-0 flex-col-reverse">
+          <div class="rounded-xl border border-white/15 bg-[#0a0f1a]/85 backdrop-blur-md p-6 shadow-xl transition-all hover:border-[#8cbfe8]/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://cdn.21st.dev/assets/mirror/7d/7d79089c6788e8d582fe1b03158a3520f2bc805983362f52b8df1558f91577ad.jpg" alt="Daniel Martinez" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                <div>
+                  <p class="font-bold text-white text-sm">Daniel Martinez</p>
+                  <p class="text-slate-400 text-xs font-mono">Full-Stack Developer • CodeCrafters</p>
+                </div>
+              </div>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                <svg role="img" viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+            </div>
+            <p class="mt-5 text-[15px] text-slate-200 leading-relaxed font-normal">
+              "The best investment we've made! The support team is also super responsive and helpful."
+            </p>
+          </div>
+          <div class="relative flex h-36 w-full items-center justify-center p-6 my-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] overflow-hidden group">
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <svg class="h-8 w-auto text-slate-400 group-hover:text-white transition-colors" viewBox="0 0 160 36" fill="currentColor">
+              <path d="M10 18c0-5.8 4.2-10 10-10 4.2 0 7.2 2 8.8 4.8l-3 2.2C24.5 13 22.8 11.5 20 11.5c-3.8 0-6.5 2.8-6.5 6.5s2.7 6.5 6.5 6.5c2.8 0 4.5-1.5 5.8-3.5l3 2.2c-1.6 2.8-4.6 4.8-8.8 4.8-5.8 0-10-4.2-10-10zm23 0c0-5.8 4.5-10 10.5-10s10.5 4.2 10.5 10-4.5 10-10.5 10S33 23.8 33 18zm17.5 0c0-3.8-2.8-6.5-7-6.5s-7 2.7-7 6.5 2.8 6.5 7 6.5 7-2.7 7-6.5zm8-10h9c5.2 0 9 3.8 9 10s-3.8 10-9 10h-9V8zm3.5 16.5h5.5c3.5 0 5.5-2.5 5.5-6.5s-2-6.5-5.5-6.5h-5.5v13zm19-16.5h14v3.5H84v4.5h9v3.5h-9V24h10v4H80.5V8z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 6. Jane Smith (Even: flex-col) -->
+        <div class="mx-3 flex w-[300px] sm:w-[380px] shrink-0 flex-col">
+          <div class="rounded-xl border border-white/15 bg-[#0a0f1a]/85 backdrop-blur-md p-6 shadow-xl transition-all hover:border-[#8cbfe8]/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://cdn.21st.dev/assets/mirror/9a/9a06193c1865e5fc792d78adc02dfec25f0473e69596efd694f24d29916b59e4.jpg" alt="Jane Smith" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                <div>
+                  <p class="font-bold text-white text-sm">Jane Smith</p>
+                  <p class="text-slate-400 text-xs font-mono">Product Manager • InnovateX</p>
+                </div>
+              </div>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                <svg role="img" viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+            </div>
+            <p class="mt-5 text-[15px] text-slate-200 leading-relaxed font-normal">
+              "The user experience is top-notch! The interface is clean, intuitive, and easy to navigate."
+            </p>
+          </div>
+          <div class="relative flex h-36 w-full items-center justify-center p-6 my-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] overflow-hidden group">
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <svg class="h-8 w-auto text-slate-400 group-hover:text-white transition-colors" viewBox="0 0 160 36" fill="currentColor">
+              <path d="M12 8h3.5v20H12V8zm12 0h3.5l10 13.5V8H41v20h-3.5L27.5 14.5V28H24V8zm22 0h3.5l10 13.5V8H63v20h-3.5L49.5 14.5V28H46V8zm21 10c0-5.8 4.5-10 10.5-10s10.5 4.2 10.5 10-4.5 10-10.5 10S67 23.8 67 18zm17.5 0c0-3.8-2.8-6.5-7-6.5s-7 2.7-7 6.5 2.8 6.5 7 6.5 7-2.7 7-6.5zm8-10h3.5l6.5 14.5L100.5 8H104l-8.5 20h-3.5l-4-9-4 9H80.5L88 8zm19 0h3.5l10 20H117l-2-4.5h-8l-2 4.5h-3.5L107 8zm-1.5 12h6.5l-3.3-7.5-3.2 7.5zm20.5-12h14v3.5h-5.2V28h-3.5V11.5H126V8zm16 0h4l4.5 6.5 4.5-6.5h4l-6.5 9.5 6.8 10.5h-4l-4.8-7.5-4.8 7.5h-4l6.8-10.5L142 8z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- ==================== SET 2 (DUPLICATE FOR SEAMLESS INFINITE LOOP) ==================== -->
+
+        <!-- 1. John Doe -->
+        <div class="mx-3 flex w-[300px] sm:w-[380px] shrink-0 flex-col-reverse">
+          <div class="rounded-xl border border-white/15 bg-[#0a0f1a]/85 backdrop-blur-md p-6 shadow-xl transition-all hover:border-[#8cbfe8]/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://cdn.21st.dev/assets/mirror/f7/f72a5321d9c055324b83d9aca5fa248af5f99213b63da015c188955f8b5f0223.jpg" alt="John Doe" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                <div>
+                  <p class="font-bold text-white text-sm">John Doe</p>
+                  <p class="text-slate-400 text-xs font-mono">Software Engineer • TechCorp</p>
+                </div>
+              </div>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                <svg role="img" viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+            </div>
+            <p class="mt-5 text-[15px] text-slate-200 leading-relaxed font-normal">
+              "This product has completely transformed the way we work. The efficiency and ease of use are unmatched!"
+            </p>
+          </div>
+          <div class="relative flex h-36 w-full items-center justify-center p-6 my-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] overflow-hidden group">
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <svg class="h-8 w-auto text-slate-400 group-hover:text-white transition-colors" viewBox="0 0 160 36" fill="currentColor">
+              <path d="M12 8h16v3.5H21V28h-3.5V11.5H12V8zm22 0h15v3.5h-11.5v4.5h10v3.5h-10V24h12v4H34V8zm22 0h15v3.5h-11.5v16.5H56V8zm19 0h3.5v8h9.5V8h3.5v20h-3.5v-8.5h-9.5V28H75V8zm23 0h14v3.5h-10.5v4.5h9v3.5h-9v8.5H98V8zm20 0h10c3.5 0 6.5 2.8 6.5 6.5v7c0 3.5-3 6.5-6.5 6.5h-10V8zm3.5 16.5h6.5c1.8 0 3-1.2 3-3v-7c0-1.8-1.2-3-3-3h-6.5v13z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 2. Sophia Lee -->
+        <div class="mx-3 flex w-[300px] sm:w-[380px] shrink-0 flex-col">
+          <div class="rounded-xl border border-white/15 bg-[#0a0f1a]/85 backdrop-blur-md p-6 shadow-xl transition-all hover:border-[#8cbfe8]/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://cdn.21st.dev/assets/mirror/57/57501d26f0a1500d35e3feb532be175cda3d4ad5d9ab7dd2ddbc346a81687641.jpg" alt="Sophia Lee" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                <div>
+                  <p class="font-bold text-white text-sm">Sophia Lee</p>
+                  <p class="text-slate-400 text-xs font-mono">Data Analyst • InsightTech</p>
+                </div>
+              </div>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                <svg role="img" viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+            </div>
+            <p class="mt-5 text-[15px] text-slate-200 leading-relaxed font-normal">
+              "This tool has saved me hours of work! The analytics and reporting features are incredibly powerful."
+            </p>
+          </div>
+          <div class="relative flex h-36 w-full items-center justify-center p-6 my-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] overflow-hidden group">
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <svg class="h-8 w-auto text-slate-400 group-hover:text-white transition-colors" viewBox="0 0 160 36" fill="currentColor">
+              <path d="M10 8h3.5v20H10V8zm12 0h3.5l10 13.5V8H39v20h-3.5L25.5 14.5V28H22V8zm22 17l2.5-2.5c2 2 4.5 3 7 3 2.5 0 4-1 4-2.5 0-1.8-1.5-2.5-4.5-3.2-4.5-1-7.5-2.5-7.5-6.5 0-3.8 3.2-6.3 7.8-6.3 3.5 0 6.2 1.2 8.2 3.2l-2.2 2.8c-1.8-1.6-3.8-2.5-6-2.5-2.5 0-4 1-4 2.2 0 1.5 1.5 2.2 4.5 3 4.8 1.2 7.5 2.8 7.5 6.8 0 4-3.2 6.5-8.2 6.5-3.8 0-7-1.4-8.8-4zm24-17h3.5v20H68V8zm11 0h3.5v8h9.5V8h3.5v20h-3.5v-8.5h-9.5V28H79V8zm22 0h16v3.5h-6.2V28h-3.5V11.5H101V8z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 3. Michael Johnson -->
+        <div class="mx-3 flex w-[300px] sm:w-[380px] shrink-0 flex-col-reverse">
+          <div class="rounded-xl border border-white/15 bg-[#0a0f1a]/85 backdrop-blur-md p-6 shadow-xl transition-all hover:border-[#8cbfe8]/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://cdn.21st.dev/assets/mirror/55/55053b4b68b2e6eb9cd8d3057617e989f97b0fccf54eb0d46ab3f2907d2c27bb.jpg" alt="Michael Johnson" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                <div>
+                  <p class="font-bold text-white text-sm">Michael Johnson</p>
+                  <p class="text-slate-400 text-xs font-mono">UX Designer • DesignPro</p>
+                </div>
+              </div>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                <svg role="img" viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+            </div>
+            <p class="mt-5 text-[15px] text-slate-200 leading-relaxed font-normal">
+              "An amazing tool that simplifies complex tasks. Highly recommended for professionals in the industry."
+            </p>
+          </div>
+          <div class="relative flex h-36 w-full items-center justify-center p-6 my-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] overflow-hidden group">
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <svg class="h-8 w-auto text-slate-400 group-hover:text-white transition-colors" viewBox="0 0 160 36" fill="currentColor">
+              <path d="M12 8h10c5 0 8.5 3.5 8.5 10s-3.5 10-8.5 10H12V8zm3.5 16.5h6.5c3 0 5-2 5-6.5s-2-6.5-5-6.5h-6.5v13zm22-16.5h15v3.5h-11.5v4.5h10v3.5h-10V24h12v4H37.5V8zm22 17l2.5-2.5c2 2 4.5 3 7 3 2.5 0 4-1 4-2.5 0-1.8-1.5-2.5-4.5-3.2-4.5-1-7.5-2.5-7.5-6.5 0-3.8 3.2-6.3 7.8-6.3 3.5 0 6.2 1.2 8.2 3.2l-2.2 2.8c-1.8-1.6-3.8-2.5-6-2.5-2.5 0-4 1-4 2.2 0 1.5 1.5 2.2 4.5 3 4.8 1.2 7.5 2.8 7.5 6.8 0 4-3.2 6.5-8.2 6.5-3.8 0-7-1.4-8.8-4zm23-17h3.5v20H82.5V8zm11 0h10c3 0 5.5 1.8 5.5 5 0 2.5-1.5 4.2-3.8 4.8l4.5 10.2H115l-4-9.5h-4.5V28h-3.5V8zm3.5 7h6.5c1.5 0 2.5-.8 2.5-2s-1-2-2.5-2H97v4zm19-7h15v3.5h-11.5v4.5h10v3.5h-10V28h-3.5V8z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 4. Emily Davis -->
+        <div class="mx-3 flex w-[300px] sm:w-[380px] shrink-0 flex-col">
+          <div class="rounded-xl border border-white/15 bg-[#0a0f1a]/85 backdrop-blur-md p-6 shadow-xl transition-all hover:border-[#8cbfe8]/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://cdn.21st.dev/assets/mirror/e1/e1e565477a93abaec6a4ffd6a6745e3620bba9e5c0c88418e4b7113667370d65.jpg" alt="Emily Davis" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                <div>
+                  <p class="font-bold text-white text-sm">Emily Davis</p>
+                  <p class="text-slate-400 text-xs font-mono">Marketing Specialist • BrandBoost</p>
+                </div>
+              </div>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                <svg role="img" viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+            </div>
+            <p class="mt-5 text-[15px] text-slate-200 leading-relaxed font-normal">
+              "I've seen a significant improvement in our team's productivity since we started using this service."
+            </p>
+          </div>
+          <div class="relative flex h-36 w-full items-center justify-center p-6 my-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] overflow-hidden group">
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <svg class="h-8 w-auto text-slate-400 group-hover:text-white transition-colors" viewBox="0 0 160 36" fill="currentColor">
+              <path d="M12 8h9.5c3.2 0 5.5 1.5 5.5 4.5 0 1.8-1 3.2-2.5 3.8 2 .6 3.2 2.2 3.2 4.2 0 3.2-2.5 4.8-6.2 4.8H12V8zm3.5 7h6c1.2 0 2.2-.6 2.2-1.8 0-1.2-1-1.8-2.2-1.8h-6v3.6zm0 6.5h6.5c1.4 0 2.5-.6 2.5-2 0-1.4-1.1-2-2.5-2h-6.5v4zm20-13.5h10c3 0 5.5 1.8 5.5 5 0 2.5-1.5 4.2-3.8 4.8l4.5 10.2H47l-4-9.5h-4.5V28H35V8zm3.5 7h6.5c1.5 0 2.5-.8 2.5-2s-1-2-2.5-2h-6.5v4zm20-7h3.5l10 20H65l-2-4.5h-8l-2 4.5h-3.5L60 8zm-1.5 12h6.5L61.7 13 58.5 20zm20.5-12h9.5c3.5 0 6 2 6 5.5 0 2-1 3.5-2.8 4.5 2.5.8 3.8 2.5 3.8 5 0 3.5-2.8 5.8-7 5.8H79V8zm3.5 7.5h5.5c1.5 0 2.5-.8 2.5-2s-1-2-2.5-2h-5.5v4zm0 6.5h6c1.6 0 2.8-.8 2.8-2.2 0-1.4-1.2-2.2-2.8-2.2h-6v4.4z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 5. Daniel Martinez -->
+        <div class="mx-3 flex w-[300px] sm:w-[380px] shrink-0 flex-col-reverse">
+          <div class="rounded-xl border border-white/15 bg-[#0a0f1a]/85 backdrop-blur-md p-6 shadow-xl transition-all hover:border-[#8cbfe8]/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://cdn.21st.dev/assets/mirror/7d/7d79089c6788e8d582fe1b03158a3520f2bc805983362f52b8df1558f91577ad.jpg" alt="Daniel Martinez" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                <div>
+                  <p class="font-bold text-white text-sm">Daniel Martinez</p>
+                  <p class="text-slate-400 text-xs font-mono">Full-Stack Developer • CodeCrafters</p>
+                </div>
+              </div>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                <svg role="img" viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+            </div>
+            <p class="mt-5 text-[15px] text-slate-200 leading-relaxed font-normal">
+              "The best investment we've made! The support team is also super responsive and helpful."
+            </p>
+          </div>
+          <div class="relative flex h-36 w-full items-center justify-center p-6 my-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] overflow-hidden group">
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <svg class="h-8 w-auto text-slate-400 group-hover:text-white transition-colors" viewBox="0 0 160 36" fill="currentColor">
+              <path d="M10 18c0-5.8 4.2-10 10-10 4.2 0 7.2 2 8.8 4.8l-3 2.2C24.5 13 22.8 11.5 20 11.5c-3.8 0-6.5 2.8-6.5 6.5s2.7 6.5 6.5 6.5c2.8 0 4.5-1.5 5.8-3.5l3 2.2c-1.6 2.8-4.6 4.8-8.8 4.8-5.8 0-10-4.2-10-10zm23 0c0-5.8 4.5-10 10.5-10s10.5 4.2 10.5 10-4.5 10-10.5 10S33 23.8 33 18zm17.5 0c0-3.8-2.8-6.5-7-6.5s-7 2.7-7 6.5 2.8 6.5 7 6.5 7-2.7 7-6.5zm8-10h9c5.2 0 9 3.8 9 10s-3.8 10-9 10h-9V8zm3.5 16.5h5.5c3.5 0 5.5-2.5 5.5-6.5s-2-6.5-5.5-6.5h-5.5v13zm19-16.5h14v3.5H84v4.5h9v3.5h-9V24h10v4H80.5V8z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 6. Jane Smith -->
+        <div class="mx-3 flex w-[300px] sm:w-[380px] shrink-0 flex-col">
+          <div class="rounded-xl border border-white/15 bg-[#0a0f1a]/85 backdrop-blur-md p-6 shadow-xl transition-all hover:border-[#8cbfe8]/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://cdn.21st.dev/assets/mirror/9a/9a06193c1865e5fc792d78adc02dfec25f0473e69596efd694f24d29916b59e4.jpg" alt="Jane Smith" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                <div>
+                  <p class="font-bold text-white text-sm">Jane Smith</p>
+                  <p class="text-slate-400 text-xs font-mono">Product Manager • InnovateX</p>
+                </div>
+              </div>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                <svg role="img" viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+            </div>
+            <p class="mt-5 text-[15px] text-slate-200 leading-relaxed font-normal">
+              "The user experience is top-notch! The interface is clean, intuitive, and easy to navigate."
+            </p>
+          </div>
+          <div class="relative flex h-36 w-full items-center justify-center p-6 my-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] overflow-hidden group">
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <svg class="h-8 w-auto text-slate-400 group-hover:text-white transition-colors" viewBox="0 0 160 36" fill="currentColor">
+              <path d="M12 8h3.5v20H12V8zm12 0h3.5l10 13.5V8H41v20h-3.5L27.5 14.5V28H24V8zm22 0h3.5l10 13.5V8H63v20h-3.5L49.5 14.5V28H46V8zm21 10c0-5.8 4.5-10 10.5-10s10.5 4.2 10.5 10-4.5 10-10.5 10S67 23.8 67 18zm17.5 0c0-3.8-2.8-6.5-7-6.5s-7 2.7-7 6.5 2.8 6.5 7 6.5 7-2.7 7-6.5zm8-10h3.5l6.5 14.5L100.5 8H104l-8.5 20h-3.5l-4-9-4 9H80.5L88 8zm19 0h3.5l10 20H117l-2-4.5h-8l-2 4.5h-3.5L107 8zm-1.5 12h6.5l-3.3-7.5-3.2 7.5zm20.5-12h14v3.5h-5.2V28h-3.5V11.5H126V8zm16 0h4l4.5 6.5 4.5-6.5h4l-6.5 9.5 6.8 10.5h-4l-4.8-7.5-4.8 7.5h-4l6.8-10.5L142 8z"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 7: PRICING & ZERO HIDDEN FEES (#pricing) ==================== -->
+  <section id="pricing" class="py-24 max-w-7xl mx-auto px-6 border-b border-white/15">
+    <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+      <span class="text-[11px] font-mono uppercase tracking-widest text-[#8cbfe8] font-bold block mb-3">PERFORMANCE-ALIGNED PRICING</span>
+      <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
+        TRANSPARENT VALUE. ZERO HIDDEN COST.
+      </h2>
+      <p class="text-slate-200 text-sm sm:text-base mt-4 leading-relaxed">
+        No management fees when we fail to generate alpha. We only succeed when your capital compounds.
+      </p>
+    </div>
+
+    <!-- 3 Thermal Receipt Pricing Cards (Styled after Meridian / Institutional Trading Slips) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start mb-16">
+      
+      <!-- Receipt 1: STARTER -->
+      <div class="receipt-wrapper reveal flex flex-col">
+        <!-- Top Jagged Sawtooth Perforation -->
+        <div class="w-full h-3 overflow-hidden leading-none -mb-[1px]">
+          <svg class="w-full h-3 fill-[#fcfcfb]" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <polygon points="0,12 5,0 10,12 15,0 20,12 25,0 30,12 35,0 40,12 45,0 50,12 55,0 60,12 65,0 70,12 75,0 80,12 85,0 90,12 95,0 100,12 105,0 110,12 115,0 120,12 125,0 130,12 135,0 140,12 145,0 150,12 155,0 160,12 165,0 170,12 175,0 180,12 185,0 190,12 195,0 200,12"></polygon>
+          </svg>
+        </div>
+
+        <!-- Receipt Body -->
+        <div class="receipt-card px-4 py-6 sm:px-7 sm:py-8 flex flex-col justify-between">
+          <div>
+            <!-- Header -->
+            <div class="text-center pb-4 border-b border-dashed border-neutral-400">
+              <div class="text-lg font-black tracking-[0.35em] uppercase text-neutral-950 font-mono">N O L A X</div>
+              <div class="text-[9px] font-mono tracking-widest text-neutral-600 uppercase mt-0.5">QUANTITATIVE ALPHA FOR CAPITAL TEAMS</div>
+            </div>
+
+            <!-- Order Metadata -->
+            <div class="py-3 border-b border-dashed border-neutral-400 text-[11px] font-mono space-y-1">
+              <div class="flex justify-between">
+                <span class="text-neutral-600 tracking-wider">ORDER</span>
+                <span class="font-bold text-neutral-950">NX-56948</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-600 tracking-wider">BILLING</span>
+                <span class="font-bold text-neutral-950">MONTHLY</span>
+              </div>
+            </div>
+
+            <!-- Plan Title -->
+            <div class="py-4 text-center border-b border-dashed border-neutral-400">
+              <div class="text-xl font-black tracking-[0.25em] uppercase text-neutral-950 font-mono">S T A R T E R</div>
+              <div class="text-[9.5px] font-mono tracking-wider text-neutral-600 uppercase mt-1">DISCIPLINED INDIVIDUAL MOMENTUM</div>
+            </div>
+
+            <!-- Specs Dot Leaders -->
+            <div class="py-4 space-y-2.5 text-[11px] font-mono">
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">MIN CAPITAL</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">₹25,000</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">ALGO MODEL</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">MOMENTUM V1</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">LATENCY</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">18.4 MS</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">RISK SHIELD</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-emerald-700">ACTIVE</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">LOCK-IN</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">ZERO</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">TELEMETRY</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">24/7 LIVE</span>
+              </div>
+            </div>
+
+            <!-- Financial Subtotal -->
+            <div class="pt-3 pb-3 border-t border-dashed border-neutral-400 space-y-1.5 text-[11px] font-mono">
+              <div class="flex justify-between">
+                <span class="text-neutral-700 tracking-wider">SUBTOTAL (MGMT FEE)</span>
+                <span class="font-bold text-neutral-950">₹0.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-700 tracking-wider">PROFIT CUT</span>
+                <span class="font-bold text-neutral-950">15.00%</span>
+              </div>
+            </div>
+
+            <!-- Barcode Stamp -->
+            <div class="pt-2 border-t border-dashed border-neutral-400 flex flex-col items-center">
+              <div class="w-full h-7 opacity-80 my-1">
+                <svg class="w-full h-full" viewBox="0 0 240 28" preserveAspectRatio="none">
+                  <rect x="0" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="5" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="9" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="16" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="19" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="25" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="33" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="38" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="44" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="48" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="54" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="59" y="0" width="6" height="28" fill="#111"/>
+                  <rect x="68" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="73" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="80" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="84" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="90" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="98" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="103" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="110" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="115" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="121" y="0" width="6" height="28" fill="#111"/>
+                  <rect x="130" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="135" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="142" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="146" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="152" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="159" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="164" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="172" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="176" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="182" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="190" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="195" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="202" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="207" y="0" width="6" height="28" fill="#111"/>
+                  <rect x="216" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="221" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="228" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="232" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="238" y="0" width="2" height="28" fill="#111"/>
+                </svg>
+              </div>
+              <div class="text-[9px] font-mono tracking-[0.3em] text-neutral-500 mt-1">NX·56948·SEBI·COMPLIANT</div>
+            </div>
+          </div>
+
+          <!-- Button -->
+          <div class="mt-5 pt-3 border-t border-dashed border-neutral-400 flex justify-center">
+            <a href="#contact" class="balloon-btn balloon-btn-full balloon-btn-sm">
+              <span>SELECT STARTER</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bottom Jagged Sawtooth Perforation -->
+        <div class="w-full h-3 overflow-hidden leading-none -mt-[1px]">
+          <svg class="w-full h-3 fill-[#fcfcfb]" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <polygon points="0,0 5,12 10,0 15,12 20,0 25,12 30,0 35,12 40,0 45,12 50,0 55,12 60,0 65,12 70,0 75,12 80,0 85,12 90,0 95,12 100,0 105,12 110,0 115,12 120,0 125,12 130,0 135,12 140,0 145,12 150,0 155,12 160,0 165,12 170,0 175,12 180,0 185,12 190,0 195,12 200,0"></polygon>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Receipt 2: PRO ALPHA (MOST POPULAR) -->
+      <div class="receipt-wrapper receipt-featured reveal md:-translate-y-3 flex flex-col">
+        <!-- Top Jagged Sawtooth Perforation -->
+        <div class="w-full h-3 overflow-hidden leading-none -mb-[1px]">
+          <svg class="w-full h-3 fill-[#ffffff]" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <polygon points="0,12 5,0 10,12 15,0 20,12 25,0 30,12 35,0 40,12 45,0 50,12 55,0 60,12 65,0 70,12 75,0 80,12 85,0 90,12 95,0 100,12 105,0 110,12 115,0 120,12 125,0 130,12 135,0 140,12 145,0 150,12 155,0 160,12 165,0 170,12 175,0 180,12 185,0 190,12 195,0 200,12"></polygon>
+          </svg>
+        </div>
+
+        <!-- Receipt Body -->
+        <div class="receipt-card !bg-white border-x-2 border-neutral-900 px-4 py-6 sm:px-7 sm:py-8 flex flex-col justify-between">
+          <div>
+            <!-- Header -->
+            <div class="text-center pb-4 border-b border-dashed border-neutral-400">
+              <div class="text-lg font-black tracking-[0.35em] uppercase text-neutral-950 font-mono">N O L A X</div>
+              <div class="text-[9px] font-mono tracking-widest text-neutral-600 uppercase mt-0.5">QUANTITATIVE ALPHA FOR CAPITAL TEAMS</div>
+            </div>
+
+            <!-- Order Metadata -->
+            <div class="py-3 border-b border-dashed border-neutral-400 text-[11px] font-mono space-y-1">
+              <div class="flex justify-between">
+                <span class="text-neutral-600 tracking-wider">ORDER</span>
+                <span class="font-bold text-neutral-950">NX-61612</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-600 tracking-wider">BILLING</span>
+                <span class="font-bold text-neutral-950">MONTHLY</span>
+              </div>
+            </div>
+
+            <!-- Plan Title + Most Popular Tag -->
+            <div class="py-4 text-center border-b border-dashed border-neutral-400">
+              <div class="text-xl font-black tracking-[0.25em] uppercase text-neutral-950 font-mono">P R O   A L P H A</div>
+              <div class="text-[9.5px] font-mono tracking-wider text-neutral-600 uppercase mt-1">ACCELERATED QUANT ALPHA ENGINE</div>
+              <div class="text-[10px] font-mono font-bold tracking-[0.25em] text-neutral-950 uppercase mt-2.5 bg-neutral-100 py-1 px-2 inline-block border border-neutral-300">
+                * * * MOST POPULAR * * *
+              </div>
+            </div>
+
+            <!-- Specs Dot Leaders -->
+            <div class="py-4 space-y-2.5 text-[11px] font-mono">
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">MIN CAPITAL</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">₹2,00,000</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">ALGO MODEL</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">WHALE RADAR V3</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">LATENCY</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">12.0 MS</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">RISK PARITY</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-emerald-700">AUTO-HEDGES</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">WHATSAPP ALERTS</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">INCL.</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">QUANT LEAD</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">DEDICATED</span>
+              </div>
+            </div>
+
+            <!-- Financial Subtotal -->
+            <div class="pt-3 pb-3 border-t border-dashed border-neutral-400 space-y-1.5 text-[11px] font-mono">
+              <div class="flex justify-between">
+                <span class="text-neutral-700 tracking-wider">SUBTOTAL (MGMT FEE)</span>
+                <span class="font-bold text-neutral-950">₹0.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-700 tracking-wider">PROFIT CUT</span>
+                <span class="font-bold text-neutral-950">12.00%</span>
+              </div>
+            </div>
+
+            <!-- Barcode Stamp -->
+            <div class="pt-2 border-t border-dashed border-neutral-400 flex flex-col items-center">
+              <div class="w-full h-7 opacity-85 my-1">
+                <svg class="w-full h-full" viewBox="0 0 240 28" preserveAspectRatio="none">
+                  <rect x="0" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="5" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="10" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="15" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="23" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="28" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="35" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="39" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="45" y="0" width="6" height="28" fill="#111"/>
+                  <rect x="54" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="59" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="66" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="71" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="79" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="83" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="89" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="96" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="101" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="109" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="114" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="120" y="0" width="6" height="28" fill="#111"/>
+                  <rect x="129" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="134" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="141" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="145" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="152" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="157" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="165" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="170" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="177" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="181" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="187" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="195" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="200" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="207" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="212" y="0" width="6" height="28" fill="#111"/>
+                  <rect x="221" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="226" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="233" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="238" y="0" width="2" height="28" fill="#111"/>
+                </svg>
+              </div>
+              <div class="text-[9px] font-mono tracking-[0.3em] text-neutral-500 mt-1">NX·61612·PRIORITY·ALPHA</div>
+            </div>
+          </div>
+
+          <!-- Button -->
+          <div class="mt-5 pt-3 border-t border-dashed border-neutral-400 flex justify-center">
+            <a href="#contact" class="balloon-btn balloon-btn-full balloon-btn-sm">
+              <span>DEPLOY PRO ALPHA</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bottom Jagged Sawtooth Perforation -->
+        <div class="w-full h-3 overflow-hidden leading-none -mt-[1px]">
+          <svg class="w-full h-3 fill-[#ffffff]" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <polygon points="0,0 5,12 10,0 15,12 20,0 25,12 30,0 35,12 40,0 45,12 50,0 55,12 60,0 65,12 70,0 75,12 80,0 85,12 90,0 95,12 100,0 105,12 110,0 115,12 120,0 125,12 130,0 135,12 140,0 145,12 150,0 155,12 160,0 165,12 170,0 175,12 180,0 185,12 190,0 195,12 200,0"></polygon>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Receipt 3: INSTITUTIONAL -->
+      <div class="receipt-wrapper reveal flex flex-col">
+        <!-- Top Jagged Sawtooth Perforation -->
+        <div class="w-full h-3 overflow-hidden leading-none -mb-[1px]">
+          <svg class="w-full h-3 fill-[#fcfcfb]" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <polygon points="0,12 5,0 10,12 15,0 20,12 25,0 30,12 35,0 40,12 45,0 50,12 55,0 60,12 65,0 70,12 75,0 80,12 85,0 90,12 95,0 100,12 105,0 110,12 115,0 120,12 125,0 130,12 135,0 140,12 145,0 150,12 155,0 160,12 165,0 170,12 175,0 180,12 185,0 190,12 195,0 200,12"></polygon>
+          </svg>
+        </div>
+
+        <!-- Receipt Body -->
+        <div class="receipt-card px-4 py-6 sm:px-7 sm:py-8 flex flex-col justify-between">
+          <div>
+            <!-- Header -->
+            <div class="text-center pb-4 border-b border-dashed border-neutral-400">
+              <div class="text-lg font-black tracking-[0.35em] uppercase text-neutral-950 font-mono">N O L A X</div>
+              <div class="text-[9px] font-mono tracking-widest text-neutral-600 uppercase mt-0.5">QUANTITATIVE ALPHA FOR CAPITAL TEAMS</div>
+            </div>
+
+            <!-- Order Metadata -->
+            <div class="py-3 border-b border-dashed border-neutral-400 text-[11px] font-mono space-y-1">
+              <div class="flex justify-between">
+                <span class="text-neutral-600 tracking-wider">ORDER</span>
+                <span class="font-bold text-neutral-950">NX-99084</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-600 tracking-wider">BILLING</span>
+                <span class="font-bold text-neutral-950">MONTHLY</span>
+              </div>
+            </div>
+
+            <!-- Plan Title -->
+            <div class="py-4 text-center border-b border-dashed border-neutral-400">
+              <div class="text-xl font-black tracking-[0.2em] uppercase text-neutral-950 font-mono">I N S T I T U T I O N A L</div>
+              <div class="text-[9.5px] font-mono tracking-wider text-neutral-600 uppercase mt-1">FAMILY OFFICES &amp; FOUNDERS</div>
+            </div>
+
+            <!-- Specs Dot Leaders -->
+            <div class="py-4 space-y-2.5 text-[11px] font-mono">
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">MIN CAPITAL</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">₹15,00,000+</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">ALGO MODEL</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">BESPOKE MULTI</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">LATENCY</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">&lt;5.0 MS</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">COLOCATION</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-emerald-700">PRIVATE CLUSTER</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">TAX-HARVEST</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">INCL.</span>
+              </div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-neutral-700 tracking-wider">CHIEF ARCHITECT</span>
+                <span class="flex-grow border-b border-dotted border-neutral-400 mx-2 mb-1"></span>
+                <span class="font-bold text-neutral-950">DIRECT LINE</span>
+              </div>
+            </div>
+
+            <!-- Financial Subtotal -->
+            <div class="pt-3 pb-3 border-t border-dashed border-neutral-400 space-y-1.5 text-[11px] font-mono">
+              <div class="flex justify-between">
+                <span class="text-neutral-700 tracking-wider">SUBTOTAL (MGMT FEE)</span>
+                <span class="font-bold text-neutral-950">₹0.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-700 tracking-wider">PROFIT CUT</span>
+                <span class="font-bold text-neutral-950">10.00%</span>
+              </div>
+            </div>
+
+            <!-- Barcode Stamp -->
+            <div class="pt-2 border-t border-dashed border-neutral-400 flex flex-col items-center">
+              <div class="w-full h-7 opacity-80 my-1">
+                <svg class="w-full h-full" viewBox="0 0 240 28" preserveAspectRatio="none">
+                  <rect x="0" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="5" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="11" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="15" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="23" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="28" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="35" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="40" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="46" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="54" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="59" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="66" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="70" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="78" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="83" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="90" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="95" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="102" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="107" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="115" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="120" y="0" width="6" height="28" fill="#111"/>
+                  <rect x="129" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="134" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="141" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="145" y="0" width="3" height="28" fill="#111"/>
+                  <rect x="151" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="159" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="164" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="171" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="176" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="184" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="189" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="196" y="0" width="1" height="28" fill="#111"/>
+                  <rect x="200" y="0" width="5" height="28" fill="#111"/>
+                  <rect x="208" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="213" y="0" width="6" height="28" fill="#111"/>
+                  <rect x="222" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="227" y="0" width="4" height="28" fill="#111"/>
+                  <rect x="234" y="0" width="2" height="28" fill="#111"/>
+                  <rect x="238" y="0" width="2" height="28" fill="#111"/>
+                </svg>
+              </div>
+              <div class="text-[9px] font-mono tracking-[0.3em] text-neutral-500 mt-1">NX·99084·INSTITUTIONAL</div>
+            </div>
+          </div>
+
+          <!-- Button -->
+          <div class="mt-5 pt-3 border-t border-dashed border-neutral-400 flex justify-center">
+            <a href="#contact" class="balloon-btn balloon-btn-full balloon-btn-sm">
+              <span>REQUEST MANDATE</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bottom Jagged Sawtooth Perforation -->
+        <div class="w-full h-3 overflow-hidden leading-none -mt-[1px]">
+          <svg class="w-full h-3 fill-[#fcfcfb]" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <polygon points="0,0 5,12 10,0 15,12 20,0 25,12 30,0 35,12 40,0 45,12 50,0 55,12 60,0 65,12 70,0 75,12 80,0 85,12 90,0 95,12 100,0 105,12 110,0 115,12 120,0 125,12 130,0 135,12 140,0 145,12 150,0 155,12 160,0 165,12 170,0 175,12 180,0 185,12 190,0 195,12 200,0"></polygon>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- Zero Hidden Fees Breakdown -->
+    <div class="card-glass p-5 sm:p-8 border border-white/15 reveal">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+        <h3 class="text-xl sm:text-2xl font-black text-white uppercase">Comparative Architecture: Nolax vs Traditional Funds</h3>
+        <span class="lg:hidden text-[10px] font-mono text-[#8cbfe8] bg-[#3876ba]/20 px-2.5 py-1 rounded-full border border-[#8cbfe8]/30 inline-block w-fit">← Swipe to compare →</span>
+      </div>
+      <div class="overflow-x-auto -mx-2 px-2 pb-2">
+        <table class="w-full min-w-[540px] text-left font-mono text-xs text-slate-200">
+          <thead class="border-b border-white/10 text-white uppercase">
+            <tr>
+              <th class="py-3">Feature</th>
+              <th class="py-3 text-red-400">Traditional Wealth Management</th>
+              <th class="py-3 text-[#8cbfe8]">Nolax Autonomous Engine</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5">
+            <tr>
+              <td class="py-3.5 font-bold text-white">Management Fee</td>
+              <td class="py-3.5 text-red-400">2.0% - 2.5% fixed every single year</td>
+              <td class="py-3.5 text-emerald-400 font-bold">ZERO. Pure performance-aligned.</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 font-bold text-white">Exit Load / Lock-in</td>
+              <td class="py-3.5 text-red-400">1% to 3% penalty if exited before 1-3 years</td>
+              <td class="py-3.5 text-emerald-400 font-bold">ZERO. Withdraw your money anytime.</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 font-bold text-white">Hidden Broker Churn</td>
+              <td class="py-3.5 text-red-400">High commissions cut behind the scenes</td>
+              <td class="py-3.5 text-emerald-400 font-bold">ZERO. Direct exchange connectivity.</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 font-bold text-white">Reporting Speed</td>
+              <td class="py-3.5 text-slate-400">Monthly or quarterly delay PDF statements</td>
+              <td class="py-3.5 text-emerald-400 font-bold">Real-time live mobile dashboard 24/7.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 8: INTERACTIVE CALCULATOR (#calculator) ==================== -->
+  <section id="calculator" class="py-24 max-w-5xl mx-auto px-6 border-b border-white/15">
+    <div class="text-center mb-12 reveal">
+      <span class="text-[11px] font-mono uppercase text-[#8cbfe8] font-bold tracking-widest">LIVE RETURN ESTIMATOR</span>
+      <h2 class="text-3xl sm:text-5xl font-black text-white mt-2 uppercase">SEE YOUR WEALTH COMPOUND</h2>
+      <p class="text-slate-200 text-sm mt-3">Interactive algorithmic alpha projection based on backtested 34.8% annualized rate.</p>
+    </div>
+
+    <div class="card-glass p-5 sm:p-12 border border-white/20 reveal">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        
+        <!-- Controls -->
+        <div class="space-y-8">
+          <div>
+            <div class="flex justify-between items-center mb-2 font-mono text-xs">
+              <span class="text-slate-300 uppercase font-bold">Starting Investment</span>
+              <span id="calcAmtLabel" class="text-xl font-black text-white font-mono">₹2,00,000</span>
+            </div>
+            <input type="range" id="calcAmt" min="25000" max="5000000" step="25000" value="200000" 
+                   class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-[#3876ba]">
+            <div class="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
+              <span>₹25K</span>
+              <span>₹25L</span>
+              <span>₹50L</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-2 font-mono text-xs">
+              <span class="text-slate-300 uppercase font-bold">Time Horizon</span>
+              <span id="calcPeriodLabel" class="text-xl font-black text-white font-mono">12 Months</span>
+            </div>
+            <input type="range" id="calcPeriod" min="3" max="36" step="1" value="12" 
+                   class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-[#3876ba]">
+            <div class="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
+              <span>3 Months</span>
+              <span>18 Months</span>
+              <span>36 Months</span>
+            </div>
+          </div>
+
+          <div class="p-4 bg-white/5 rounded ext-radius border border-white/10 text-xs text-slate-300 leading-relaxed font-mono">
+            ℹ️ Projections apply historical average alpha (+2.38% per month compounded). Zero exit lock-in. Past performance does not guarantee future results.
+          </div>
+        </div>
+
+        <!-- Result Display -->
+        <div class="card-glass p-6 sm:p-8 border border-[#3876ba]/40 bg-[#3876ba]/20 text-center flex flex-col justify-between h-full">
+          <div>
+            <span class="text-[11px] font-mono uppercase text-[#8cbfe8] font-bold tracking-wider">PROJECTED PORTFOLIO VALUE</span>
+            <div id="calcTotal" class="text-4xl sm:text-5xl font-black text-white font-mono my-4 tracking-tight">₹2,69,600</div>
+            <div id="calcGains" class="text-sm font-mono text-emerald-400 font-bold">
+              <i data-lucide="trending-up" class="w-4 h-4 inline"></i> +₹69,600 estimated profit (+34.8%)
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-white/15 flex justify-around text-xs font-mono">
+            <div>
+              <div class="text-slate-300 mb-0.5">Principal</div>
+              <div id="calcPrincipal" class="text-white font-bold">₹2,00,000</div>
+            </div>
+            <div>
+              <div class="text-slate-300 mb-0.5">Est. Alpha</div>
+              <div id="calcProfitOnly" class="text-emerald-400 font-bold">+₹69,600</div>
+            </div>
+          </div>
+
+          <a href="#contact" class="mt-6 balloon-btn balloon-btn-full">
+            <span>Lock in this Allocation</span>
+            <span>👈</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 9: CONTACT & BOOKING FORM (#contact) ==================== -->
+  <section id="contact" class="py-24 max-w-6xl mx-auto px-6 border-b border-white/15">
+    <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+      <span class="text-[11px] font-mono uppercase tracking-widest text-[#8cbfe8] font-bold block mb-3">DIRECT QUANT CONSULTATION</span>
+      <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
+        LET'S CHAT ABOUT SCALING YOUR CAPITAL. 👋
+      </h2>
+      <p class="text-slate-200 text-sm sm:text-base mt-4 leading-relaxed">
+        Have questions regarding automated algorithms, account connection, or custom parameters? Speak directly with our quantitative engineering team.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+      
+      <!-- Left: Interactive Form -->
+      <div class="card-glass p-5 sm:p-10 border border-white/20 reveal">
+        <h3 class="text-2xl font-black text-white mb-2 uppercase">Book a Strategy Walkthrough</h3>
+        <p class="text-slate-300 text-xs mb-8 font-mono">Fill details below. Response within 2 hours during active market hours.</p>
+
+        <form id="contactForm" class="space-y-4" onsubmit="handleFormSubmit(event)">
+          <div>
+            <label class="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300 mb-1">Your Full Name</label>
+            <input required type="text" placeholder="e.g. Rahul Sharma" class="w-full bg-slate-950/80 border border-white/20 ext-radius px-4 py-3 text-sm text-white focus:outline-none focus:border-[#8cbfe8]">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300 mb-1">Email Address</label>
+            <input required type="email" placeholder="rahul@domain.com" class="w-full bg-slate-950/80 border border-white/20 ext-radius px-4 py-3 text-sm text-white focus:outline-none focus:border-[#8cbfe8]">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300 mb-1">WhatsApp / Phone</label>
+            <input required type="tel" placeholder="+91 98765 43210" class="w-full bg-slate-950/80 border border-white/20 ext-radius px-4 py-3 text-sm text-white focus:outline-none focus:border-[#8cbfe8]">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300 mb-1">Planned Allocation</label>
+            <select class="w-full bg-slate-950/80 border border-white/20 ext-radius px-4 py-3 text-sm text-white focus:outline-none focus:border-[#8cbfe8]">
+              <option>₹50,000 - ₹2,00,000</option>
+              <option>₹2,00,000 - ₹10,00,000</option>
+              <option>₹10,00,000 - ₹50,00,000</option>
+              <option>₹50,00,000+ (Institutional Mandate)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300 mb-1">Notes / Target Questions</label>
+            <textarea rows="3" placeholder="Tell us your investment timeline or goals..." class="w-full bg-slate-950/80 border border-white/20 ext-radius px-4 py-3 text-sm text-white focus:outline-none focus:border-[#8cbfe8]"></textarea>
+          </div>
+
+          <button type="submit" class="balloon-btn balloon-btn-full py-4">
+            <span>Confirm Strategy Booking</span>
+            <span>👋</span>
+          </button>
+        </form>
+
+        <div id="formSuccess" class="hidden mt-4 p-4 ext-radius bg-[#3876ba]/40 border border-[#8cbfe8] text-white text-xs font-mono text-center">
+          ✅ Request Received! Quant team will reach out via WhatsApp / Email within 2 hours.
+        </div>
+      </div>
+
+      <!-- Right: Direct Channels & Guarantee -->
+      <div class="space-y-6 reveal reveal-delay-1">
+        
+        <div class="card-glass p-6 sm:p-8 border border-white/15">
+          <span class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-2">HOTLINE 01</span>
+          <h4 class="text-xl font-black text-white uppercase mb-2">Direct WhatsApp Hotline</h4>
+          <p class="text-slate-200 text-xs mb-4">For immediate inquiries, speak directly with our algo trading desk.</p>
+          <a href="https://wa.me/919999999999" target="_blank" class="inline-flex items-center gap-2 text-xs font-mono font-bold text-emerald-300 hover:underline">
+            <span>CHAT ON WHATSAPP (+91 99999 99999)</span>
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+
+        <div class="card-glass p-6 sm:p-8 border border-white/15">
+          <span class="text-[11px] font-mono uppercase tracking-wider text-[#8cbfe8] font-bold block mb-2">SECURITY PROTOCOL</span>
+          <h4 class="text-xl font-black text-white uppercase mb-2">Non-Custodial Architecture</h4>
+          <p class="text-slate-200 text-xs leading-relaxed">
+            Nolax never touches or holds your principal funds. All trades execute directly in your verified brokerage account (Zerodha, AngelOne, Upstox, Interactive Brokers) via official SEBI-compliant APIs.
+          </p>
+        </div>
+
+        <div class="card-glass p-6 sm:p-8 border border-white/15">
+          <span class="text-[11px] font-mono uppercase tracking-wider text-purple-300 font-bold block mb-2">PHYSICAL DESK</span>
+          <h4 class="text-xl font-black text-white uppercase mb-2">Trading Desk Office</h4>
+          <p class="text-slate-200 text-xs leading-relaxed font-mono">
+            Nolax Quantitative Technologies<br/>
+            Level 14, Alpha Financial Tower, BKC<br/>
+            Mumbai, Maharashtra 400051
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 10: FAQ (#faq) ==================== -->
+  <section id="faq" class="py-24 max-w-4xl mx-auto px-6">
+    <div class="text-center mb-14 reveal">
+      <span class="text-[11px] font-mono uppercase text-[#8cbfe8] font-bold tracking-widest">CLEAR ANSWERS</span>
+      <h2 class="text-3xl sm:text-5xl font-black text-white mt-2 uppercase">FREQUENTLY ASKED QUESTIONS</h2>
+    </div>
+
+    <div class="space-y-4">
+      
+      <div class="card-glass p-6 border border-white/15 reveal">
+        <h4 class="text-lg font-bold text-white mb-2">Is my capital deposited directly with Nolax?</h4>
+        <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+          No. Your capital stays 100% inside your own SEBI-registered broker account (such as Zerodha, AngelOne, or Upstox). Nolax triggers algorithmic buy and sell executions through secured client APIs. Liquidity withdrawal authority remains strictly and exclusively in your hands.
+        </p>
+      </div>
+
+      <div class="card-glass p-6 border border-white/15 reveal">
+        <h4 class="text-lg font-bold text-white mb-2">How does the algorithmic engine manage market downturns?</h4>
+        <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+          Nolax algorithms feature an autonomous Capital Shield. When anomalous volatility or liquidity breakdowns are detected, positions rebalance to cash and delta-hedges within 20 milliseconds, strictly capping portfolio drawdown.
+        </p>
+      </div>
+
+      <div class="card-glass p-6 border border-white/15 reveal">
+        <h4 class="text-lg font-bold text-white mb-2">Are there lock-in periods, exit penalties, or early redemption fees?</h4>
+        <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+          None. Zero lock-in period. You can pause automated execution or withdraw your entire balance anytime with a single tap from your terminal. No exit loads, no penalty fees, and zero hidden deductions.
+        </p>
+      </div>
+
+      <div class="card-glass p-6 border border-white/15 reveal">
+        <h4 class="text-lg font-bold text-white mb-2">Why does Nolax outperform traditional mutual funds and portfolio managers?</h4>
+        <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+          Traditional funds levy fixed 2.0%–2.5% management fees regardless of whether the market rises or falls, eroding 25%–30% of compounding returns. Nolax operates purely on quantitative execution—no broker churn, no 40-page confusing jargon reports, only transparent math and sub-second execution.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-[#05070c]/90 backdrop-blur-md border-t border-white/15 py-14 text-[12px] font-mono text-slate-400">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1">
+            <span class="w-1.5 h-3 bg-white ext-radius"></span>
+            <span class="w-1.5 h-6 bg-white ext-radius"></span>
+            <span class="w-1.5 h-4 bg-sky-200 ext-radius"></span>
+            <span class="w-1.5 h-7 bg-white ext-radius"></span>
+          </div>
+          <span class="text-xl font-black text-white tracking-wider">NOLAX AI</span>
+        </div>
+        <div class="flex flex-wrap gap-6 text-xs text-slate-300">
+          <a href="#home" class="hover:text-white transition-colors">Home</a>
+          <a href="#pillars" class="hover:text-white transition-colors">Pillars</a>
+          <a href="#about" class="hover:text-white transition-colors">About</a>
+          <a href="#services" class="hover:text-white transition-colors">Services</a>
+          <a href="#works" class="hover:text-white transition-colors">Works</a>
+          <a href="#pricing" class="hover:text-white transition-colors">Plans</a>
+          <a href="#calculator" class="hover:text-white transition-colors">Calculator</a>
+          <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+        </div>
+      </div>
+      <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-slate-500">
+        <div>© 2026 NOLAX TECHNOLOGIES INC. ALL RIGHTS RESERVED.</div>
+        <div class="text-center sm:text-right">
+          Procedural WebGL Day Azure Cloud Engine • Autonomous Quantitative Wealth
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== JAVASCRIPTS ==================== -->
+  <script src="cloud-shader.js"></script>
+  <script src="tech-text-init.js"></script>
+  <script src="paper-crumple-init.js"></script>
+  <script src="fluid-glass-init.js"></script>
+  <script src="components/ui/analytics-chart.js"></script>
+  <script src="balloon-button-init.js"></script>
+  <script src="mobile-nav.js"></script>
+
+  <script>
+    // 1. Initialize Lucide Icons
+    lucide.createIcons();
+
+    // 2. Reading Progress Bar
+    window.addEventListener('scroll', () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        document.getElementById('scrollProgress').style.width = (window.scrollY / docHeight) * 100 + '%';
+      }
+    });
+
+    // 3. Scroll Reveal Observer
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('active');
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal, .card-glass').forEach(el => obs.observe(el));
+
+    // 4. Performance Line Chart (Acme Style from Image 1)
+    if (window.initAnalyticsChart) {
+      window.initAnalyticsChart('performanceChart');
+    }
+
+    // 5. Calculator Logic
+    const amt = document.getElementById('calcAmt');
+    const amtLabel = document.getElementById('calcAmtLabel');
+    const period = document.getElementById('calcPeriod');
+    const periodLabel = document.getElementById('calcPeriodLabel');
+    const totalOut = document.getElementById('calcTotal');
+    const gainsOut = document.getElementById('calcGains');
+    const principalOut = document.getElementById('calcPrincipal');
+    const profitOnlyOut = document.getElementById('calcProfitOnly');
+
+    function recalc() {
+      if (!amt || !period) return;
+      const p = parseInt(amt.value);
+      const m = parseInt(period.value);
+
+      amtLabel.innerText = '₹' + p.toLocaleString('en-IN');
+      periodLabel.innerText = m + ' Months';
+      principalOut.innerText = '₹' + p.toLocaleString('en-IN');
+
+      const rate = 0.0238;
+      const total = Math.round(p * Math.pow(1 + rate, m));
+      const diff = total - p;
+      const pct = ((diff / p) * 100).toFixed(1);
+
+      totalOut.innerText = '₹' + total.toLocaleString('en-IN');
+      gainsOut.innerHTML = `<i data-lucide="trending-up" class="w-3.5 h-3.5 inline"></i> +₹${diff.toLocaleString('en-IN')} estimated profit (${pct}%)`;
+      profitOnlyOut.innerText = '+₹' + diff.toLocaleString('en-IN');
+      lucide.createIcons();
+    }
+
+    if (amt && period) {
+      amt.addEventListener('input', recalc);
+      period.addEventListener('input', recalc);
+    }
+
+    // 6. Form Submission Handler
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      document.getElementById('formSuccess').classList.remove('hidden');
+      e.target.reset();
+    }
+
+    // 7. Site Preloader 1 to 100 Counter Logic
+    (function initPreloader() {
+      const preloader = document.getElementById('sitePreloader');
+      const counter = document.getElementById('preloaderCount');
+      const bar = document.getElementById('preloaderBar');
+      if (!preloader || !counter || !bar) return;
+
+      let progress = 0;
+      const duration = 1200; // 1.2s smooth ramp
+      const startTime = performance.now();
+
+      function update(now) {
+        const elapsed = now - startTime;
+        progress = Math.min(100, Math.floor((elapsed / duration) * 100));
+        
+        counter.textContent = progress;
+        bar.style.width = progress + '%';
+
+        if (progress < 100) {
+          requestAnimationFrame(update);
+        } else {
+          setTimeout(() => {
+            preloader.style.opacity = '0';
+            preloader.style.transform = 'scale(1.03)';
+            preloader.style.pointerEvents = 'none';
+            setTimeout(() => {
+              if (preloader.parentNode) preloader.parentNode.removeChild(preloader);
+            }, 750);
+          }, 150);
+        }
+      }
+      requestAnimationFrame(update);
+    })();
+  </script>
+</body>
+</html>

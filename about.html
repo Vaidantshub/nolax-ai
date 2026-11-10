@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About & Manifesto — Nolax AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="components/ui/FluidGlass.css">
+  <link rel="stylesheet" href="components/ui/box-loader.css">
+  <link rel="stylesheet" href="components/ui/balloon-button.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+    
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #07090e;
+      color: #ffffff;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      letter-spacing: -0.012em;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+      letter-spacing: -0.028em;
+    }
+
+    /* Fixed Fullscreen Day Azure Cloud Shader */
+    #globalCloudCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: -10;
+    }
+
+    .bg-overlay {
+      position: fixed; inset: 0;
+      background: radial-gradient(circle at 50% 20%, rgba(7, 9, 14, 0.25) 0%, rgba(7, 9, 14, 0.65) 100%);
+      pointer-events: none;
+      z-index: -5;
+    }
+
+    .card-glass {
+      background: rgba(10, 15, 26, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-glass:hover {
+      border-color: #8cbfe8;
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px -10px rgba(56, 118, 186, 0.4);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    #scrollProgress {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, #3876ba, #8cbfe8, #0038ff);
+      z-index: 100; width: 0%;
+      transition: width 0.1s ease-out;
+    }
+
+    .ticker-scroll { animation: ticker 25s linear infinite; }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ext-radius { border-radius: 6px; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen relative">
+
+  <canvas id="globalCloudCanvas" data-cloud-shader></canvas>
+  <div class="bg-overlay"></div>
+  <div id="scrollProgress"></div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-[#3876ba]/80 backdrop-blur-md border-b border-white/20 text-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="flex items-center gap-1">
+          <span class="w-1.5 h-3 bg-white ext-radius"></span>
+          <span class="w-1.5 h-6 bg-white ext-radius"></span>
+          <span class="w-1.5 h-4 bg-sky-200 ext-radius"></span>
+          <span class="w-1.5 h-7 bg-white ext-radius"></span>
+        </div>
+        <span class="text-2xl font-black tracking-tighter text-white uppercase drop-shadow">nolax</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-8 text-[13.33px] font-semibold text-white/90">
+        <a href="index.html" class="hover:text-white transition-colors">Home</a>
+        <a href="about.html" class="text-white border-b-2 border-white pb-1 font-bold">About ↓</a>
+        <a href="services.html" class="hover:text-white transition-colors">Services ↓</a>
+        <a href="works.html" class="hover:text-white transition-colors">Works ↓</a>
+        <a href="pricing.html" class="hover:text-white transition-colors">Plans ↓</a>
+        <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <a href="contact.html" class="balloon-btn balloon-btn-sm">
+          <span>Let's chat</span>
+          <span>👋</span>
+        </a>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="mobileMenuBtn" aria-label="Toggle navigation menu" class="lg:hidden p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all flex items-center justify-center">
+          <svg class="w-6 h-6 menu-open-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg class="w-6 h-6 menu-close-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobileMenu" class="lg:hidden hidden border-t border-white/15 bg-[#07090e]/95 backdrop-blur-2xl px-6 py-6 shadow-2xl transition-all duration-300">
+      <div class="flex flex-col space-y-3 font-semibold text-sm text-white/90">
+        <a href="index.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Home</a>
+        <a href="about.html" class="mobile-nav-link py-2.5 border-b border-white/10 text-white font-bold bg-white/5 px-2 rounded">About (Current)</a>
+        <a href="services.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Services</a>
+        <a href="works.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Works</a>
+        <a href="pricing.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Plans</a>
+        <a href="contact.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Contact</a>
+      </div>
+      <div class="mt-5 pt-3">
+        <a href="contact.html" class="balloon-btn balloon-btn-full py-3 mobile-nav-link">
+          <span>Book Strategy Call</span>
+          <span>👋</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero with TechText -->
+  <section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden py-16 text-center">
+    <div class="relative z-10 max-w-4xl mx-auto px-6">
+      <span class="text-[11px] font-mono uppercase tracking-widest text-[#8cbfe8] font-bold block mb-4">OUR PHILOSOPHY &amp; MANIFESTO</span>
+
+      <!-- TechText Wordmark -->
+      <div class="w-full h-28 sm:h-36 relative mb-4 cursor-pointer select-none reveal" 
+           data-tech-text 
+           data-text="MANIFESTO" 
+           data-font-size="95" 
+           data-color="#ffffff" 
+           data-accent="#8cbfe8">
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase leading-tight mb-6 drop-shadow-[0_4px_24px_rgba(0,0,0,0.35)] reveal">
+        WE BUILT NOLAX TO KILL FINANCIAL NOISE AND MARKET JARGON.
+      </h1>
+
+      <p class="text-white/85 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto font-normal drop-shadow reveal">
+        The traditional investment ecosystem profits by confusing you with 40-page PDFs, misleading fees, and emotional televised pundits. Nolax replaces them with autonomous algorithmic execution.
+      </p>
+    </div>
+  </section>
+
+  <!-- Marquee Ticker -->
+  <div class="w-full bg-[#3876ba]/90 backdrop-blur-md py-3.5 overflow-hidden whitespace-nowrap text-white font-mono text-[12px] font-bold tracking-widest uppercase border-y border-white/20 shadow-md">
+    <div class="flex ticker-scroll">
+      <span class="mx-6">/ OPERATING TIER UPGRADE · POST-NOLAX</span>
+      <span class="mx-6">/ ZERO 40-PAGE CONFUSING REPORTS</span>
+      <span class="mx-6">/ 100% TRANSPARENT ALGORITHMIC SPEED</span>
+      <span class="mx-6">/ NON-CUSTODIAL EXECUTION · DIRECT ROUTING</span>
+      <span class="mx-6">/ OPERATING TIER UPGRADE · POST-NOLAX</span>
+      <span class="mx-6">/ ZERO 40-PAGE CONFUSING REPORTS</span>
+      <span class="mx-6">/ 100% TRANSPARENT ALGORITHMIC SPEED</span>
+      <span class="mx-6">/ NON-CUSTODIAL EXECUTION · DIRECT ROUTING</span>
+    </div>
+  </div>
+
+  <!-- Comparison & PaperCrumple 3D Contract -->
+  <section class="py-20 max-w-6xl mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch">
+      
+      <!-- The Old Broken System with PaperCrumple -->
+      <div class="card-glass p-6 sm:p-8 border border-red-500/30 reveal flex flex-col justify-between">
+        <div>
+          <span class="text-[11px] font-mono uppercase tracking-widest text-red-400 font-bold">THE OLD BROKEN SYSTEM</span>
+          <h2 class="text-2xl font-black text-white mt-2 mb-4 uppercase">Legacy Advisory &amp; Hidden Deductions</h2>
+          <ul class="space-y-3 text-xs sm:text-sm text-slate-300">
+            <li class="flex items-start gap-3">
+              <span class="w-5 h-5 ext-radius bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 text-xs font-bold">✕</span>
+              <span><strong>Emotional Bias:</strong> Fund managers chasing tops due to FOMO and selling bottoms during panics.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-5 h-5 ext-radius bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 text-xs font-bold">✕</span>
+              <span><strong>Hidden Deductions:</strong> Ongoing expense ratios chewing up 25-30% of lifetime returns.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-5 h-5 ext-radius bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 text-xs font-bold">✕</span>
+              <span><strong>Opaque Statements:</strong> Overcomplicated reports that hide why positions underperformed.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- The Nolax Engine -->
+      <div class="card-glass p-6 sm:p-8 border border-[#3876ba] bg-[#3876ba]/20 reveal flex flex-col justify-between">
+        <div>
+          <span class="text-[11px] font-mono uppercase tracking-widest text-[#8cbfe8] font-bold">THE NOLAX ENGINE</span>
+          <h2 class="text-2xl font-black text-white mt-2 mb-4 uppercase">Deterministic Technology &amp; Direct Execution</h2>
+          <ul class="space-y-4 text-xs sm:text-sm text-white">
+            <li class="flex items-start gap-3">
+              <span class="w-5 h-5 ext-radius bg-[#3876ba] text-white flex items-center justify-center shrink-0 text-xs font-bold">✓</span>
+              <span><strong>Autonomous Precision:</strong> Cold mathematical execution entering high-probability momentum and auto-exiting before dumps.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-5 h-5 ext-radius bg-[#3876ba] text-white flex items-center justify-center shrink-0 text-xs font-bold">✓</span>
+              <span><strong>Zero Secret Deductions:</strong> Performance-aligned architecture. What you see on your dashboard is 100% yours.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-5 h-5 ext-radius bg-[#3876ba] text-white flex items-center justify-center shrink-0 text-xs font-bold">✓</span>
+              <span><strong>Mobile-First Transparency:</strong> Sub-second live portfolio telemetry and instant one-tap withdrawals.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-white/20">
+          <a href="pricing.html" class="w-full py-3.5 ext-radius text-center text-xs font-bold uppercase tracking-wider bg-white text-slate-950 hover:bg-slate-100 transition-all block shadow-lg">
+            View Performance-Aligned Pricing →
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="py-20 max-w-7xl mx-auto px-6 border-t border-white/15">
+    <div class="text-center mb-14 reveal">
+      <span class="text-[11px] font-mono uppercase tracking-widest text-[#8cbfe8] font-bold">CORE ARCHITECTURE</span>
+      <h2 class="text-3xl sm:text-4xl font-black text-white mt-2 uppercase">HOW NOLAX DELIVERS ALPHA</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-glass p-6 sm:p-8 reveal">
+        <div class="text-2xl text-[#8cbfe8] mb-3 font-mono font-bold">01 / ORDERBOOK RADAR</div>
+        <h3 class="text-xl font-black text-white mb-2 uppercase">Quantitative Speed</h3>
+        <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+          Orderbook liquidity flows and volume velocity replace subjective opinions or news sentiment.
+        </p>
+      </div>
+
+      <div class="card-glass p-6 sm:p-8 reveal">
+        <div class="text-2xl text-emerald-400 mb-3 font-mono font-bold">02 / CAPITAL SHIELD</div>
+        <h3 class="text-xl font-black text-white mb-2 uppercase">Automated Defense</h3>
+        <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+          Circuit breakers switch your capital to stable cash hedges in milliseconds whenever systemic market stress spikes.
+        </p>
+      </div>
+
+      <div class="card-glass p-6 sm:p-8 reveal">
+        <div class="text-2xl text-purple-400 mb-3 font-mono font-bold">03 / REAL-TIME LEDGER</div>
+        <h3 class="text-xl font-black text-white mb-2 uppercase">Pure Transparency</h3>
+        <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+          Every rupee allocation and trade ledger is rendered in real time without delays or monthly obfuscation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#05070c]/90 backdrop-blur-md border-t border-white/15 py-10 text-center text-[11px] font-mono text-slate-400 mt-auto">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>© 2026 NOLAX TECHNOLOGIES INC. • PROCEDURAL CLOUD ENGINE</div>
+      <div class="flex gap-4">
+        <a href="index.html" class="hover:text-white">Home</a>
+        <a href="services.html" class="hover:text-white">Services</a>
+        <a href="works.html" class="hover:text-white">Works</a>
+        <a href="pricing.html" class="hover:text-white">Plans</a>
+        <a href="contact.html" class="hover:text-white">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="cloud-shader.js"></script>
+  <script src="tech-text-init.js"></script>
+  <script src="fluid-glass-init.js"></script>
+  <script src="paper-crumple-init.js"></script>
+  <script src="box-loader-init.js"></script>
+  <script src="balloon-button-init.js"></script>
+  <script src="mobile-nav.js"></script>
+  <script>
+    lucide.createIcons();
+    window.addEventListener('scroll', () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        document.getElementById('scrollProgress').style.width = (window.scrollY / docHeight) * 100 + '%';
+      }
+    });
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal, .card-glass').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

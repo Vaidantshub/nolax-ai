@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" width="400" height="520">
+  <!-- Aged Yellowish Paper background -->
+  <rect x="10" y="10" width="380" height="500" rx="4" fill="#f5f0e1" stroke="#d5ccb6" stroke-width="2"/>
+  <rect x="22" y="22" width="356" height="476" rx="2" fill="none" stroke="#948b75" stroke-width="1"/>
+
+  <!-- Header -->
+  <text x="35" y="55" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="bold" fill="#78716c" letter-spacing="1">TRADITIONAL BROKERAGE CONTRACT (2014-2025)</text>
+  <text x="35" y="80" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" font-weight="900" fill="#44403c">STANDARD ADVISORY AGREEMENT</text>
+  <text x="35" y="98" font-family="monospace" font-size="9" fill="#78716c">DOCUMENT ID: #OLD-LEGACY-FINEPRINT-883</text>
+  
+  <line x1="35" y1="112" x2="365" y2="112" stroke="#d6d3d1" stroke-width="1.5"/>
+
+  <!-- Fake confusing fine print -->
+  <text x="35" y="135" font-family="monospace" font-size="8.5" fill="#78716c">SECTION 4.1 (EXPENSE RATIOS):</text>
+  <text x="35" y="150" font-family="monospace" font-size="8" fill="#a8a29e">The client agrees to mandatory deductions of 2.25% p.a. regardless</text>
+  <text x="35" y="163" font-family="monospace" font-size="8" fill="#a8a29e">of portfolio performance, market corrections, or loss events.</text>
+
+  <text x="35" y="190" font-family="monospace" font-size="8.5" fill="#78716c">SECTION 8.4 (EXIT PENALTIES &amp; LOCK-IN):</text>
+  <text x="35" y="205" font-family="monospace" font-size="8" fill="#a8a29e">Early withdrawal prior to 36 months incurs a 2.5% exit penalty,</text>
+  <text x="35" y="218" font-family="monospace" font-size="8" fill="#a8a29e">reinvestment delay friction, and retroactive churn taxes.</text>
+
+  <text x="35" y="245" font-family="monospace" font-size="8.5" fill="#78716c">SECTION 12.9 (OPACITY &amp; PDF LAG):</text>
+  <text x="35" y="260" font-family="monospace" font-size="8" fill="#a8a29e">Holdings disclosure statements shall be provided on a 45-day lag</text>
+  <text x="35" y="273" font-family="monospace" font-size="8" fill="#a8a29e">via non-machine-readable password protected PDF attachments.</text>
+
+  <line x1="35" y1="295" x2="365" y2="295" stroke="#d6d3d1" stroke-width="1.5"/>
+
+  <!-- HUGE RED VOID STAMP -->
+  <g transform="translate(200, 375) rotate(-22)">
+    <rect x="-135" y="-35" width="270" height="70" rx="8" fill="none" stroke="#dc2626" stroke-width="6" stroke-dasharray="16,6"/>
+    <text x="0" y="16" font-family="'Plus Jakarta Sans', sans-serif" font-size="42" font-weight="900" fill="#dc2626" text-anchor="middle" letter-spacing="4">VOID / CRUMPLE</text>
+  </g>
+
+  <text x="200" y="475" font-family="monospace" font-size="8.5" font-weight="bold" fill="#dc2626" text-anchor="middle">CRUMPLE THIS OLD BUREAUCRATIC JARGON FOREVER 💥</text>
+</svg>
+

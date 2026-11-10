@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact & Strategy Booking — Nolax AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="components/ui/FluidGlass.css">
+  <link rel="stylesheet" href="components/ui/box-loader.css">
+  <link rel="stylesheet" href="components/ui/balloon-button.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+    
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #07090e;
+      color: #ffffff;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      letter-spacing: -0.012em;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+      letter-spacing: -0.028em;
+    }
+
+    #globalCloudCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: -10;
+    }
+
+    .bg-overlay {
+      position: fixed; inset: 0;
+      background: radial-gradient(circle at 50% 20%, rgba(7, 9, 14, 0.25) 0%, rgba(7, 9, 14, 0.65) 100%);
+      pointer-events: none;
+      z-index: -5;
+    }
+
+    .card-glass {
+      background: rgba(10, 15, 26, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-glass:hover {
+      border-color: #8cbfe8;
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px -10px rgba(56, 118, 186, 0.4);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    #scrollProgress {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, #3876ba, #8cbfe8, #0038ff);
+      z-index: 100; width: 0%;
+      transition: width 0.1s ease-out;
+    }
+
+    .ext-radius { border-radius: 6px; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen relative">
+
+  <canvas id="globalCloudCanvas" data-cloud-shader></canvas>
+  <div class="bg-overlay"></div>
+  <div id="scrollProgress"></div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-[#3876ba]/80 backdrop-blur-md border-b border-white/20 text-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="flex items-center gap-1">
+          <span class="w-1.5 h-3 bg-white ext-radius"></span>
+          <span class="w-1.5 h-6 bg-white ext-radius"></span>
+          <span class="w-1.5 h-4 bg-sky-200 ext-radius"></span>
+          <span class="w-1.5 h-7 bg-white ext-radius"></span>
+        </div>
+        <span class="text-2xl font-black tracking-tighter text-white uppercase drop-shadow">nolax</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-8 text-[13.33px] font-semibold text-white/90">
+        <a href="index.html" class="hover:text-white transition-colors">Home</a>
+        <a href="about.html" class="hover:text-white transition-colors">About ↓</a>
+        <a href="services.html" class="hover:text-white transition-colors">Services ↓</a>
+        <a href="works.html" class="hover:text-white transition-colors">Works ↓</a>
+        <a href="pricing.html" class="hover:text-white transition-colors">Plans ↓</a>
+        <a href="contact.html" class="text-white border-b-2 border-white pb-1 font-bold">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <a href="contact.html" class="balloon-btn balloon-btn-sm">
+          <span>Let's chat</span>
+          <span>👋</span>
+        </a>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="mobileMenuBtn" aria-label="Toggle navigation menu" class="lg:hidden p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all flex items-center justify-center">
+          <svg class="w-6 h-6 menu-open-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg class="w-6 h-6 menu-close-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobileMenu" class="lg:hidden hidden border-t border-white/15 bg-[#07090e]/95 backdrop-blur-2xl px-6 py-6 shadow-2xl transition-all duration-300">
+      <div class="flex flex-col space-y-3 font-semibold text-sm text-white/90">
+        <a href="index.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Home</a>
+        <a href="about.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">About</a>
+        <a href="services.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Services</a>
+        <a href="works.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Works</a>
+        <a href="pricing.html" class="mobile-nav-link py-2.5 border-b border-white/10 hover:text-white hover:pl-2 transition-all">Plans</a>
+        <a href="contact.html" class="mobile-nav-link py-2.5 border-b border-white/10 text-white font-bold bg-white/5 px-2 rounded">Contact (Current)</a>
+      </div>
+      <div class="mt-5 pt-3">
+        <a href="tel:+919999999999" class="balloon-btn balloon-btn-full py-3 mobile-nav-link">
+          <span>Call Desk Directly</span>
+          <span>📞</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero with TechText -->
+  <section class="relative min-h-[45vh] flex items-center justify-center overflow-hidden py-14 text-center">
+    <div class="relative z-10 max-w-4xl mx-auto px-6">
+
+      <!-- TechText Wordmark -->
+      <div class="w-full h-28 sm:h-36 relative mb-4 cursor-pointer select-none reveal" 
+           data-tech-text 
+           data-text="LET'S CHAT" 
+           data-font-size="95" 
+           data-color="#ffffff" 
+           data-accent="#8cbfe8">
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase leading-tight mb-4 drop-shadow-[0_4px_24px_rgba(0,0,0,0.35)] reveal">
+        LET'S CHAT ABOUT SCALING YOUR CAPITAL. 👋
+      </h1>
+
+      <p class="text-white/85 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto font-normal drop-shadow reveal">
+        Have questions regarding automated algorithms, account connection, or custom parameters? Speak directly with our quantitative engineering team.
+      </p>
+    </div>
+  </section>
+
+  <!-- Form + Info Section with PaperCrumple Guarantee -->
+  <section class="py-12 max-w-6xl mx-auto px-6 mb-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+      
+      <!-- Left: Form -->
+      <div class="card-glass p-5 sm:p-10 border border-white/20 reveal">
+        <h3 class="text-2xl font-black text-white mb-2 uppercase">Book a Strategy Walkthrough</h3>
+        <p class="text-slate-300 text-xs mb-8 font-mono">Fill details below. Response within 2 hours during active market hours.</p>
+
+        <form id="contactForm" class="space-y-4" onsubmit="handleFormSubmit(event)">
+          <div>
+            <label class="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300 mb-1">Your Full Name</label>
+            <input required type="text" placeholder="e.g. Rahul Sharma" class="w-full bg-slate-950/80 border border-white/20 ext-radius px-4 py-3 text-sm text-white focus:outline-none focus:border-[#8cbfe8]">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300 mb-1">Email Address</label>
+            <input required type="email" placeholder="rahul@domain.com" class="w-full bg-slate-950/80 border border-white/20 ext-radius px-4 py-3 text-sm text-white focus:outline-none focus:border-[#8cbfe8]">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300 mb-1">WhatsApp / Phone</label>
+            <input required type="tel" placeholder="+91 98765 43210" class="w-full bg-slate-950/80 border border-white/20 ext-radius px-4 py-3 text-sm text-white focus:outline-none focus:border-[#8cbfe8]">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300 mb-1">Planned Allocation</label>
+            <select class="w-full bg-slate-950/80 border border-white/20 ext-radius px-4 py-3 text-sm text-white focus:outline-none focus:border-[#8cbfe8]">
+              <option>₹50,000 - ₹2,00,000</option>
+              <option>₹2,00,000 - ₹10,00,000</option>
+              <option>₹10,00,000 - ₹50,00,000</option>
+              <option>₹50,00,000+ (Institutional Mandate)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300 mb-1">Notes / Target Questions</label>
+            <textarea rows="3" placeholder="Tell us your investment timeline or goals..." class="w-full bg-slate-950/80 border border-white/20 ext-radius px-4 py-3 text-sm text-white focus:outline-none focus:border-[#8cbfe8]"></textarea>
+          </div>
+
+          <button type="submit" class="balloon-btn balloon-btn-full py-4">
+            <span>Confirm Strategy Booking</span>
+            <span>👋</span>
+          </button>
+        </form>
+
+        <div id="formSuccess" class="hidden mt-4 p-4 ext-radius bg-[#3876ba]/40 border border-[#8cbfe8] text-white text-xs font-mono text-center">
+          ✅ Request Received! Quant team will reach out via WhatsApp / Email within 2 hours.
+        </div>
+      </div>
+
+      <!-- Right: Direct Channels + 3D PaperCrumple Guarantee -->
+      <div class="space-y-6 reveal reveal-delay-1">
+        
+        <div class="card-glass p-6 sm:p-8 border border-white/15">
+          <span class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-2">HOTLINE</span>
+          <h4 class="text-xl font-black text-white uppercase mb-2">Direct WhatsApp Hotline</h4>
+          <p class="text-slate-200 text-xs mb-4">For immediate inquiries, speak directly with our algo trading desk.</p>
+          <a href="https://wa.me/919999999999" target="_blank" class="inline-flex items-center gap-2 text-xs font-mono font-bold text-emerald-300 hover:underline">
+            <span>CHAT ON WHATSAPP (+91 99999 99999)</span>
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+
+
+        <div class="card-glass p-6 sm:p-8 border border-white/15">
+          <span class="text-[11px] font-mono uppercase tracking-wider text-purple-300 font-bold block mb-2">PHYSICAL DESK</span>
+          <h4 class="text-xl font-black text-white uppercase mb-2">Trading Desk Office</h4>
+          <p class="text-slate-200 text-xs leading-relaxed font-mono">
+            Nolax Quantitative Technologies<br/>
+            Level 14, Alpha Financial Tower, BKC<br/>
+            Mumbai, Maharashtra 400051
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#05070c]/90 backdrop-blur-md border-t border-white/15 py-10 text-center text-[11px] font-mono text-slate-400 mt-auto">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>© 2026 NOLAX TECHNOLOGIES INC. • PROCEDURAL CLOUD ENGINE</div>
+      <div class="flex gap-4">
+        <a href="index.html" class="hover:text-white">Home</a>
+        <a href="about.html" class="hover:text-white">About</a>
+        <a href="services.html" class="hover:text-white">Services</a>
+        <a href="works.html" class="hover:text-white">Works</a>
+        <a href="pricing.html" class="hover:text-white">Plans</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="cloud-shader.js"></script>
+  <script src="tech-text-init.js"></script>
+  <script src="fluid-glass-init.js"></script>
+  <script src="paper-crumple-init.js"></script>
+  <script src="box-loader-init.js"></script>
+  <script src="balloon-button-init.js"></script>
+  <script src="mobile-nav.js"></script>
+  <script>
+    lucide.createIcons();
+    window.addEventListener('scroll', () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        document.getElementById('scrollProgress').style.width = (window.scrollY / docHeight) * 100 + '%';
+      }
+    });
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal, .card-glass').forEach(el => obs.observe(el));
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      document.getElementById('formSuccess').classList.remove('hidden');
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>

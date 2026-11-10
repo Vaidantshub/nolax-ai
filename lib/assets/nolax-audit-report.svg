@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800" width="640" height="800">
+  <defs>
+    <linearGradient id="paperBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f5f7fa"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3876ba"/>
+      <stop offset="100%" stop-color="#0038ff"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sheet Base -->
+  <rect x="0" y="0" width="640" height="800" fill="url(#paperBg)" rx="8"/>
+  <rect x="24" y="24" width="592" height="752" fill="none" stroke="#e2e8f0" stroke-width="2" rx="4"/>
+  <rect x="32" y="32" width="576" height="736" fill="none" stroke="#3876ba" stroke-width="1.5" stroke-dasharray="6 3" rx="2"/>
+
+  <!-- Watermark -->
+  <text x="320" y="440" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="76" font-weight="900" fill="#0038ff" fill-opacity="0.04" text-anchor="middle" transform="rotate(-30 320 440)">VERIFIED ALPHA</text>
+
+  <!-- Header -->
+  <g transform="translate(60, 80)">
+    <!-- Logo -->
+    <rect x="0" y="0" width="6" height="24" fill="#0038ff" rx="2"/>
+    <rect x="10" y="-4" width="6" height="32" fill="#3876ba" rx="2"/>
+    <rect x="20" y="4" width="6" height="20" fill="#0038ff" rx="2"/>
+    <text x="38" y="22" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="28" font-weight="900" fill="#07090e" letter-spacing="-1">NOLAX AI</text>
+    <text x="180" y="22" font-family="monospace" font-size="12" font-weight="700" fill="#3876ba">/ AUDIT REPORT #2026-X9</text>
+  </g>
+
+  <!-- Title -->
+  <text x="60" y="170" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="26" font-weight="900" fill="#07090e">CAPITAL INTEGRITY & ALPHA CERTIFICATE</text>
+  <text x="60" y="196" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="500" fill="#64748b">Autonomous Orderbook Verification & Algorithmic Health Check</text>
+
+  <!-- Divider Line -->
+  <line x1="60" y1="215" x2="580" y2="215" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- Key Metrics Grid -->
+  <g transform="translate(60, 240)">
+    <!-- Box 1 -->
+    <rect x="0" y="0" width="245" height="90" fill="#f8fafc" stroke="#e2e8f0" rx="6"/>
+    <text x="20" y="32" font-family="monospace" font-size="11" font-weight="700" fill="#64748b">HISTORICAL ALPHA</text>
+    <text x="20" y="68" font-family="monospace" font-size="30" font-weight="900" fill="#0038ff">+34.8%</text>
+
+    <!-- Box 2 -->
+    <rect x="275" y="0" width="245" height="90" fill="#f8fafc" stroke="#e2e8f0" rx="6"/>
+    <text x="295" y="32" font-family="monospace" font-size="11" font-weight="700" fill="#64748b">CAPITAL SHIELD</text>
+    <text x="295" y="68" font-family="monospace" font-size="30" font-weight="900" fill="#10b981">100% SAFE</text>
+  </g>
+
+  <!-- Audit Checklist -->
+  <g transform="translate(60, 370)">
+    <text x="0" y="0" font-family="monospace" font-size="12" font-weight="700" fill="#3876ba">SYSTEM VALIDATION CHECKS</text>
+
+    <g transform="translate(0, 20)">
+      <circle cx="10" cy="12" r="8" fill="#10b981"/>
+      <path d="M6 12 L9 15 L14 9" stroke="#fff" stroke-width="2" fill="none"/>
+      <text x="28" y="16" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="700" fill="#0f172a">Zero Hidden Commission / Direct Pass-through</text>
+      <text x="28" y="34" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="11" fill="#64748b">No broker markups, 100% of the return goes to user ledger.</text>
+    </g>
+
+    <g transform="translate(0, 80)">
+      <circle cx="10" cy="12" r="8" fill="#10b981"/>
+      <path d="M6 12 L9 15 L14 9" stroke="#fff" stroke-width="2" fill="none"/>
+      <text x="28" y="16" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="700" fill="#0f172a">Sub-20ms Flash Dump Circuit Breakers</text>
+      <text x="28" y="34" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="11" fill="#64748b">Verified automatic rotation to liquid cash during market panic.</text>
+    </g>
+
+    <g transform="translate(0, 140)">
+      <circle cx="10" cy="12" r="8" fill="#10b981"/>
+      <path d="M6 12 L9 15 L14 9" stroke="#fff" stroke-width="2" fill="none"/>
+      <text x="28" y="16" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="700" fill="#0f172a">Immediate On-Demand Liquidity</text>
+      <text x="28" y="34" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="11" fill="#64748b">Zero lock-in penalties. Instant single-click withdrawals.</text>
+    </g>
+  </g>
+
+  <!-- Official Seal -->
+  <g transform="translate(430, 600)">
+    <circle cx="70" cy="70" r="54" fill="none" stroke="#0038ff" stroke-width="2.5" stroke-dasharray="4 2"/>
+    <circle cx="70" cy="70" r="46" fill="none" stroke="#0038ff" stroke-width="1.5"/>
+    <text x="70" y="65" font-family="monospace" font-size="10" font-weight="800" fill="#0038ff" text-anchor="middle">NOLAX QUANT</text>
+    <text x="70" y="82" font-family="monospace" font-size="11" font-weight="900" fill="#0038ff" text-anchor="middle">APPROVED</text>
+    <text x="70" y="98" font-family="monospace" font-size="9" font-weight="600" fill="#0038ff" text-anchor="middle">2026 VERIFIED</text>
+  </g>
+
+  <!-- Signatures -->
+  <g transform="translate(60, 670)">
+    <line x1="0" y1="20" x2="180" y2="20" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="0" y="38" font-family="monospace" font-size="11" font-weight="600" fill="#64748b">Chief Quant Strategist</text>
+    <text x="0" y="14" font-family="'Brush Script MT', cursive, sans-serif" font-size="20" fill="#0038ff">Alexandre N.</text>
+
+    <line x1="220" y1="20" x2="350" y2="20" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="220" y="38" font-family="monospace" font-size="11" font-weight="600" fill="#64748b">Autonomous Node #04</text>
+    <text x="220" y="14" font-family="monospace" font-size="13" font-weight="700" fill="#10b981">SHA256: 9b2f..4a</text>
+  </g>
+</svg>
+

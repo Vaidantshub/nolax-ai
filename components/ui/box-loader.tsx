@@ -1,0 +1,39 @@
+import type React from "react"
+import "./box-loader.css"
+
+const BoxLoader: React.FC = () => {
+  return (
+    <div className="relative flex items-center justify-center">
+      <div className="boxes">
+        <div className="box box-1">
+          <div className="face face-front" />
+          <div className="face face-right" />
+          <div className="face face-top" />
+          <div className="face face-back" />
+        </div>
+        <div className="box box-2">
+          <div className="face face-front" />
+          <div className="face face-right" />
+          <div className="face face-top" />
+          <div className="face face-back" />
+        </div>
+        <div className="box box-3">
+          <div className="face face-front" />
+          <div className="face face-right" />
+          <div className="face face-top" />
+          <div className="face face-back" />
+        </div>
+        <div className="box box-4">
+          <div className="face face-front" />
+          <div className="face face-right" />
+          <div className="face face-top" />
+          <div className="face face-back" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default BoxLoader
+export { BoxLoader }
+
