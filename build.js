@@ -35,3 +35,4 @@ fs.readdirSync(__dirname).forEach(file => {
 });
 
 console.log('Build complete! Static assets prepared in ./dist');
+
