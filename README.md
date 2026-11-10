@@ -27,3 +27,4 @@ This project uses a pure static architecture (HTML5 + CDN dependencies) with zer
 - **Vercel**: Pre-configured via `vercel.json` with clean URLs.
 - **GitHub Pages**: Set Source to `Deploy from a branch` -> `main` / `/ (root)`.
 - **Netlify**: Deploy directory `.`.
+
