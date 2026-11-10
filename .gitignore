@@ -1,3 +1,6 @@
 node_modules/
-.DS_Store
+local-server.js
+package.json
+package-lock.json
 *.log
+.DS_Store
